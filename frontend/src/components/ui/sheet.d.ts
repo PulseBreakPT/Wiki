@@ -1,0 +1,10 @@
+import * as React from 'react';
+import * as Dialog from '@radix-ui/react-dialog';
+export const Sheet: typeof Dialog.Root;
+export const SheetTrigger: typeof Dialog.Trigger;
+export const SheetClose: typeof Dialog.Close;
+export const SheetTitle: typeof Dialog.Title;
+export const SheetDescription: typeof Dialog.Description;
+export const SheetContent: React.ForwardRefExoticComponent<React.ComponentPropsWithoutRef<typeof Dialog.Content> & {side?:'left'|'right'|'top'|'bottom'} & React.RefAttributes<HTMLDivElement>>;
+export const SheetHeader: React.FC<React.HTMLAttributes<HTMLDivElement>>;
+export const SheetFooter: React.FC<React.HTMLAttributes<HTMLDivElement>>;

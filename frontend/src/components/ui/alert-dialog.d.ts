@@ -1,0 +1,11 @@
+import * as React from 'react';
+import * as Primitive from '@radix-ui/react-alert-dialog';
+export const AlertDialog: typeof Primitive.Root;
+export const AlertDialogTrigger: typeof Primitive.Trigger;
+export const AlertDialogContent: typeof Primitive.Content;
+export const AlertDialogTitle: typeof Primitive.Title;
+export const AlertDialogDescription: typeof Primitive.Description;
+export const AlertDialogCancel: typeof Primitive.Cancel;
+export const AlertDialogAction: typeof Primitive.Action;
+export const AlertDialogHeader: React.FC<React.HTMLAttributes<HTMLDivElement>>;
+export const AlertDialogFooter: React.FC<React.HTMLAttributes<HTMLDivElement>>;

@@ -1,0 +1,9 @@
+import {useState} from 'react';
+import {GitCompareArrows,ChevronDown,ChevronUp} from 'lucide-react';
+import {api} from '../lib/api';
+type Diff={changes:{field:string;before:string|null;after:string|null}[]};
+export const RevisionDiff=({slug,from,to}:{slug:string;from:number;to:number})=>{
+ const [data,setData]=useState<Diff|null>(null),[open,setOpen]=useState(false),[busy,setBusy]=useState(false),[error,setError]=useState('');
+ const toggle=async()=>{if(open){setOpen(false);return;}setOpen(true);if(data)return;setBusy(true);setError('');try{setData(await api<Diff>(`/entities/${slug}/diff?from_version=${from}&to_version=${to}`));}catch(e:any){setError(e.message);}finally{setBusy(false);}};
+ return <div className="publication-diff"><button className="text-link" onClick={toggle} data-testid={`diff-toggle-${to}`} aria-expanded={open}><GitCompareArrows size={14}/>{busy?'A consultar as publicações…':`Diferenças entre v${from} e v${to}`}{open?<ChevronUp size={13}/>:<ChevronDown size={13}/>}</button>{open&&<div data-testid={`diff-content-${to}`}>{error&&<p role="alert" className="form-error" data-testid={`diff-error-${to}`}>{error}</p>}{data?.changes.length===0&&<p className="diff-empty" data-testid={`diff-empty-${to}`}>Sem alterações aos campos ou às afirmações. Consulte o motivo editorial.</p>}{data?.changes.map((change,i)=><div className="revision-diff" key={`${change.field}-${i}`} data-testid={`diff-change-${to}-${i}`}><span>{change.field}</span>{change.before!==null&&<del><span>−</span> {change.before}</del>}{change.after!==null&&<ins><span>+</span> {change.after}</ins>}</div>)}</div>}</div>;
+};

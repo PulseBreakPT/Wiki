@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="1" failures="0" skipped="0" tests="1" time="0.580" timestamp="2026-09-25T00:51:26.776220+00:00" hostname="agent-env-e011d5fd-c8cf-473c-ac39-9334b85f7c61"><testcase classname="" name="tests.test_vi_archive_api" time="0.000"><error message="collection failure">/root/.venv/lib/python3.11/site-packages/_pytest/python.py:508: in importtestmodule
+    mod = import_path(
+/root/.venv/lib/python3.11/site-packages/_pytest/pathlib.py:596: in import_path
+    importlib.import_module(module_name)
+/usr/local/lib/python3.11/importlib/__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1204: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1176: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1147: in _find_and_load_unlocked
+    ???
+&lt;frozen importlib._bootstrap&gt;:690: in _load_unlocked
+    ???
+/root/.venv/lib/python3.11/site-packages/_pytest/assertion/rewrite.py:179: in exec_module
+    source_stat, co = _rewrite_test(fn, self.config)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/root/.venv/lib/python3.11/site-packages/_pytest/assertion/rewrite.py:348: in _rewrite_test
+    tree = ast.parse(source, filename=strfn)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.11/ast.py:50: in parse
+    return compile(source, filename, mode, flags,
+E     File "/app/backend/tests/test_vi_archive_api.py", line 51
+E       mongo_db.assertions.delete_many({"id": {"$regex": f"^({'|'.join(map(lambda x: x.replace('-', '\\-'), draft_ids))})-"}})
+E                                                                                                                           ^
+E   SyntaxError: f-string expression part cannot include a backslash</error></testcase></testsuite></testsuites>

@@ -1,0 +1,9 @@
+export type Source = {id: string; title: string; url: string; publisher: string; accessed_at: string; rights: string};
+export type Claim = {id: string; property: string; value: string; source_id: string; excerpt: string; locator: string; origin: string; nature: string; verification: string; applicability: string; method: string; related_entity_id?: string; spoiler: boolean; reviewed_by: string; recorded_at: string; source?: Source};
+export type Entity = {id: string; slug: string; name: string; type: string; summary: string; aliases: string[]; image: string; image_position: string; version: number; updated_at: string; assertion_count: number; label: string; assertions?: Claim[]; related?: Entity[]};
+export type SearchResult = {items: Entity[]; total: number; next_cursor?: string; suggestion?: string};
+export type Revision = {id: string; version: number; reason: string; created_at: string; author_name: string; reviewer_name: string; snapshot: Entity; assertion_ids: string[]};
+export type Draft = {id: string; entity_id: string; base_version: number; snapshot: Entity; assertions: Claim[]; reason: string; status: string; author_name: string; revision: number; reviewer_name?: string; created_at: string};
+export type User = {id: string; email: string; name: string; role: string};
+export const typeNames: Record<string, string> = {personagem: 'Personagens', local: 'Locais', organizacao: 'Organizações', veiculo: 'Veículos', sistema: 'Sistemas'};
+export const dateLabel = (date: string) => new Date(date).toLocaleDateString('pt-PT', {day:'numeric', month:'short', year:'numeric'});
