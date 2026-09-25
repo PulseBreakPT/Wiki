@@ -9,7 +9,7 @@ import json
 from typing import Dict, Any
 
 # Backend URL from frontend/.env
-BASE_URL = "https://3d8882c8-f708-4395-8be5-7cad54ecb8cf.preview.emergentagent.com"
+BASE_URL = "https://android-release-auto.preview.emergentagent.com"
 
 class TestResults:
     def __init__(self):
