@@ -1,146 +1,158 @@
 {
-  "project_name": "VI Archive — Plataforma Mundial de Conhecimento sobre GTA 6",
-  "app_type": "hybrid_fullstack",
-  "default_language": "pt-PT",
-  "archetype": "LUXURY & PERFORMANCE TECH (Vice Night Edition)",
-  "page_order_protocol": [
-    "resposta_principal",
-    "dados_essenciais",
-    "fontes_e_contexto",
-    "detalhe",
-    "conteudos_relacionados"
+  "project_identity": {
+    "name": "VI Archive — The Leonida Files",
+    "theme_type": "Hybrid GTA VI HUD + Cinematic Editorial Research Archive",
+    "mission": "Elevate VI Archive into a top-tier, dark-mode worldwide GTA VI knowledge platform. Transform small, illegible typography and cramped whitespace into a high-impact, tactical research interface with Vice City neon accents (Cyan & Pink) and crisp editorial legibility."
+  },
+  "design_principles": [
+    "Fusion over Imitation: Pair tactical game UI/HUD framing (cyan lines, micro crosshairs, corner brackets) with sleek editorial magazine typography (Unbounded + IBM Plex Sans).",
+    "Content is King & Legibility First: Eliminate 7-10px micro-fonts for core content. All body text must be 13-15px, micro-labels 11-12px, and headings bold and commanding (up to 48px).",
+    "High-Contrast Surface Strategy: Use Dark Obsidian (#08090E) for background, Dark Slate (#12141D) for elevated surfaces, and 1px crisp borders (#222636) with subtle inner glows.",
+    "Dynamic Vice Palette: Anchor in dark carbon, elevated by Vice Electric Pink (#FF2A85), Tactical Cyan (#00F0FF), Vice Sunset Gold (#FFB800), and Verification Emerald (#00FF9D).",
+    "Preserve All Functional Contracts: Retain 100% of existing data-testid attributes, route structures, search autocomplete behaviors, local bookmarks, and editorial workflows."
   ],
   "typography": {
-    "heading_font": "Unbounded, 'Bebas Neue', sans-serif",
-    "body_font": "'IBM Plex Sans', 'Inter', sans-serif",
-    "mono_font": "'JetBrains Mono', 'Source Code Pro', monospace",
-    "scale": {
-      "h1": "text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-none",
-      "h2": "text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight",
-      "h3": "text-xl sm:text-2xl font-semibold tracking-normal",
-      "h4": "text-lg sm:text-xl font-medium",
-      "body": "text-base sm:text-sm text-slate-300 leading-relaxed",
-      "label": "text-xs uppercase tracking-[0.2em] font-mono font-semibold text-pink-400"
+    "font_families": {
+      "display": "'Unbounded', sans-serif",
+      "body": "'IBM Plex Sans', sans-serif",
+      "mono": "'JetBrains Mono', monospace"
     },
-    "guidelines": "Use JavaScript component notation (.js files). Headings MUST use Unbounded or Bebas Neue with tight letter spacing (tracking-tight). Evidence snippets and timestamps MUST use JetBrains Mono."
+    "type_scale": {
+      "hero_h1": "clamp(32px, 4.5vw, 52px) | font-weight: 700 | line-height: 1.15 | tracking-tight",
+      "section_h2": "24px sm:28px lg:34px | font-weight: 600 | line-height: 1.25 | tracking-tight",
+      "subsection_h3": "17px sm:19px lg:21px | font-weight: 600 | line-height: 1.35",
+      "body_large": "15px sm:16px | line-height: 1.75 | color: #E2E5EE",
+      "body_main": "13px sm:14px | line-height: 1.65 | color: #C8CBD6",
+      "body_muted": "12px sm:13px | line-height: 1.6 | color: #9196A8",
+      "label_hud": "11px sm:12px | font-weight: 600 | tracking-wider | text-transform: uppercase | font-family: 'JetBrains Mono'",
+      "badge_micro": "10px sm:11px | font-weight: 500 | font-family: 'JetBrains Mono'"
+    },
+    "anti_pattern_fixes": [
+      "REPLACE all 7px, 8px, 9px, and 10px fonts with a minimum 11px label font and 13px body font.",
+      "Ensure heading contrast ratio exceeds 7:1 against dark backgrounds and body copy exceeds 4.5:1."
+    ]
   },
   "colors": {
-    "theme_default": "dark",
-    "palette": {
-      "background_obsidian": "#0A0B10",
-      "surface_card": "#141722",
-      "surface_card_hover": "#1C2130",
-      "border_subtle": "rgba(255, 255, 255, 0.08)",
-      "border_active": "rgba(255, 42, 133, 0.4)",
-      "brand_vice_pink": "#FF2A85",
-      "brand_vice_cyan": "#00F0FF",
-      "accent_amber": "#FFB800",
-      "text_primary": "#F1F5F9",
-      "text_secondary": "#94A3B8",
-      "text_muted": "#64748B",
-      "evidence_official": "#10B981",
-      "evidence_verified": "#06B6D4",
-      "evidence_datamined": "#A855F7",
-      "evidence_rumour": "#F59E0B"
+    "backgrounds": {
+      "base_obsidian": "#08090E",
+      "surface_slate": "#12141D",
+      "surface_elevated": "#1A1D2A",
+      "sidebar_bg": "#0B0C12",
+      "header_bg": "rgba(11, 12, 18, 0.92)"
     },
-    "gradients": {
-      "vice_glow": "linear-gradient(135deg, rgba(255, 42, 133, 0.15) 0%, rgba(0, 240, 255, 0.05) 100%)",
-      "card_border": "linear-gradient(90deg, rgba(255,42,133,0.3) 0%, rgba(0,240,255,0.1) 50%, rgba(255,255,255,0.05) 100%)"
+    "borders": {
+      "subtle_stroke": "#222636",
+      "hover_stroke": "#3C445C",
+      "active_neon_stroke": "rgba(0, 240, 255, 0.4)",
+      "pink_accent_stroke": "rgba(255, 42, 133, 0.4)"
     },
-    "rules": "DO NOT use generic blue SaaS gradients or pure #000000 black. Neutral greys must be tinted with deep navy/indigo hue (#0A0B10). FORBIDDEN COLOR: #7351B7 and #1B93A4."
-  },
-  "visual_enhancers": {
-    "glassmorphism": "backdrop-blur-xl bg-[#0A0B10]/80 border border-white/10 shadow-2xl",
-    "grid_lines": "repeating-linear-gradient(0deg, transparent, transparent 40px, rgba(255,255,255,0.02) 40px, rgba(255,255,255,0.02) 41px)",
-    "tracing_beam": "1px solid border with dynamic animated glow on hover state for primary entity cards and evidence panels."
-  },
-  "layout_and_grids": {
-    "bento_grid_mode_a": "grid grid-cols-1 md:grid-cols-8 lg:grid-cols-12 gap-6 lg:gap-8",
-    "dashboard_grid_mode_b": "grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-6",
-    "padding_standard": "p-6 md:p-8 lg:p-12",
-    "max_width_container": "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
-  },
-  "five_public_pillars": {
-    "explorar": {
-      "title": "Explorar",
-      "description": "Wiki estruturada, catálogo de entidades (personagens, veículos, armas, locais), schemas tipados e grafos de relações em dois sentidos."
+    "accents": {
+      "vice_pink": "#FF2A85",
+      "hud_cyan": "#00F0FF",
+      "sunset_gold": "#FFB800",
+      "verification_emerald": "#00FF9D",
+      "danger_red": "#FF4757"
     },
-    "encontrar": {
-      "title": "Encontrar",
-      "description": "Pesquisa instantânea de alta performance com autocomplete, filtros por tipo/evidência, mapa geográfico em Leaflet e respostas diretas (quick answers)."
-    },
-    "resolver": {
-      "title": "Resolver",
-      "description": "Guias passo-a-passo com pré-requisitos, comparadores com normalização de unidades e checklists de progresso local."
-    },
-    "acompanhar": {
-      "title": "Acompanhar",
-      "description": "Notícias verificadas, registo de patches, descobertas comunitárias e rastreio transparente de rumores com rótulos de confiança."
-    },
-    "guardar": {
-      "title": "Guardar",
-      "description": "Listas personalizadas, favoritos sem login obrigatório (localStorage) e sincronização opcional de perfil de jogo."
+    "text": {
+      "bright": "#F1F3F9",
+      "regular": "#C8CBD6",
+      "muted": "#9196A8",
+      "cyan_hud": "#00F0FF",
+      "pink_hud": "#FFA3C8"
     }
   },
-  "editorial_workspace_redacao": {
-    "title": "Redação (Área Privada)",
-    "description": "Painel seguro para investigação, revisão de submissões, gestão de afirmações (Assertions), fontes e evidências (Sources), histórico de revisões com Diffs e auditoria.",
-    "roles": ["colaborador", "investigador", "jornalista", "editor", "moderador", "administrador"],
-    "workflow": ["submissao", "triagem", "investigacao", "revisao", "publicacao", "monitorizacao"]
+  "visual_enhancers": {
+    "hud_brackets": "Use pseudo-elements (before/after) or 1px SVG corner brackets on active cards and callout boxes to deliver an authentic GTA VI tactical research HUD feel.",
+    "scanline_texture": "Subtle background scanline effect via repeating linear gradient: linear-gradient(rgba(18,20,29,0) 50%, rgba(0,0,0,0.18) 50%) with background-size 100% 4px on hero banners.",
+    "hero_overlays": "Multi-stage gradient overlay: linear-gradient(90deg, #08090E 0%, rgba(8,9,14,0.85) 45%, rgba(8,9,14,0.3) 100%), linear-gradient(0deg, #08090E 0%, transparent 50%).",
+    "interactive_effects": "Cards transition with transform: translateY(-3px), border-color: #00F0FF, and shadow: 0 10px 30px rgba(0,240,255,0.12). Buttons scale down slightly on press (:active)."
   },
-  "evidence_system": {
-    "dimensions": {
-      "origem": ["oficial", "observacao_no_jogo", "datamining", "imprensa", "comunidade"],
-      "natureza": ["observacao", "declaracao", "interpretacao", "rumor"],
-      "verificacao": ["pendente", "reproduzida", "contestada", "refutada"],
-      "aplicabilidade": ["versoes", "plataformas", "modos", "condicoes"]
+  "media_assets": {
+    "local_path": "/media",
+    "available_images": {
+      "heroes": [
+        "/media/hero-sunset.webp",
+        "/media/hero-night.webp",
+        "/media/hero-city.webp",
+        "/media/hero.webp",
+        "/media/hero-alternative.webp"
+      ],
+      "characters": [
+        { "id": "jason", "name": "Jason Duval", "url": "/media/jason.webp" },
+        { "id": "lucia", "name": "Lucia Caminos", "url": "/media/lucia.webp" },
+        { "id": "cal", "name": "Cal Hampton", "url": "/media/cal.webp" },
+        { "id": "brian", "name": "Brian Heder", "url": "/media/brian.webp" },
+        { "id": "boobie", "name": "Boobie Ike", "url": "/media/boobie.webp" }
+      ],
+      "locations": [
+        { "id": "vice-city", "name": "Vice City", "url": "/media/vice-city.webp" },
+        { "id": "keys", "name": "Leonida Keys", "url": "/media/keys.webp" },
+        { "id": "grassrivers", "name": "Grassrivers", "url": "/media/grassrivers.webp" },
+        { "id": "port", "name": "Port Gellhorn", "url": "/media/port.webp" },
+        { "id": "ambrosia", "name": "Ambrosia", "url": "/media/ambrosia.webp" },
+        { "id": "kalaga", "name": "Mount Kalaga National Park", "url": "/media/kalaga.webp" }
+      ]
+    }
+  },
+  "layout_blueprints": {
+    "sidebar": {
+      "width": "240px (w-60)",
+      "bg": "#0B0C12",
+      "border": "1px solid #222636",
+      "navigation": "Clear 14px navigation links with left neon indicator bar when active, count badge for 'Guardar', and HUD status footer."
     },
-    "public_labels": [
-      {"name": "Official", "color": "#10B981", "badge_class": "bg-emerald-500/10 text-emerald-400 border-emerald-500/30"},
-      {"name": "Verified", "color": "#06B6D4", "badge_class": "bg-cyan-500/10 text-cyan-400 border-cyan-500/30"},
-      {"name": "Datamined", "color": "#A855F7", "badge_class": "bg-purple-500/10 text-purple-400 border-purple-500/30"},
-      {"name": "Rumour", "color": "#F59E0B", "badge_class": "bg-amber-500/10 text-amber-400 border-amber-500/30"},
-      {"name": "Reported", "color": "#3B82F6", "badge_class": "bg-blue-500/10 text-blue-400 border-blue-500/30"},
-      {"name": "Community Discovery", "color": "#EC4899", "badge_class": "bg-pink-500/10 text-pink-400 border-pink-500/30"}
-    ]
+    "topbar": {
+      "height": "64px (h-16)",
+      "bg": "rgba(11, 12, 18, 0.92)",
+      "blur": "backdrop-blur-md",
+      "search_width": "320px",
+      "features": "Search autocomplete dropdown with image previews, keyboard shortcut indicator [K], language tag, and bookmarks shortcut."
+    },
+    "explore_page": {
+      "hero_banner": "Full width 380px height hero with Vice City sunset backdrop, punchy 44px title ('ARQUIVO MUNDIAL GTA VI'), subheadline, and high-visibility neon search input.",
+      "category_grid": "4-column responsive bento cards with cyan HUD icons, category title (14px), and claim count indicator.",
+      "entity_grid": "4-column grid on desktop, 2-col on tablet, 1-col on mobile. EntityCard features 16:9 framed media with map/character badge, bookmark button, 13px summary, and verification tag."
+    },
+    "entity_detail": {
+      "header": "380px tall full-bleed hero with entity key art, back navigation, bookmark/share CTA, title (36px), and summary.",
+      "body": "Split view: main assertion list (claims with source badges, evidence trigger button) + sticky context sidebar (origin, nature, verification status)."
+    },
+    "find_search_page": {
+      "toolbar": "Unified search input + type filter pill bar (Todos, Personagens, Locais) + origin filter dropdown + view toggle (Grid / List)."
+    }
   },
-  "media": {
-    "image_urls": [
-      {
-        "category": "hero_background",
-        "url": "https://images.unsplash.com/photo-1728902505378-9d9ac0b69c1f?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1ODh8MHwxfHNlYXJjaHwxfHxndGElMjB2aWNlJTIwY2l0eSUyMHNreWxpbmUlMjBzeW50aHdhdmUlMjBuZW9uJTIwc3Vuc2V0JTIwcGFsbSUyMHRyZWVzfGVufDB8fHx8MTc5MDI5NjMxOHww&ixlib=rb-4.1.0&q=85",
-        "description": "Vice City inspired neon night street with palm trees and twilight aesthetic"
-      },
-      {
-        "category": "city_skyline",
-        "url": "https://images.pexels.com/photos/9855362/pexels-photo-9855362.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-        "description": "Dramatic cityscape of modern skyscrapers at dusk with palm trees and reflected lights"
-      },
-      {
-        "category": "twilight_urban",
-        "url": "https://images.pexels.com/photos/1769581/pexels-photo-1769581.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-        "description": "Skyscrapers against a vibrant twilight sky for Leonida/Vice City atmosphere"
-      }
-    ]
-  },
-  "component_rules": {
-    "extension": "js",
-    "shadcn_integration": "Customize default Shadcn elements with Vice Night styles; override hardcoded heights (e.g. override tablist h-9 to h-auto).",
-    "toast_library": "sonner",
-    "toast_component_path": "/app/src/components/ui/sonner.js",
-    "icons": "lucide-react"
-  },
-  "accessibility_and_testing": {
-    "wcag_target": "WCAG 2.2 AA",
-    "keyboard_nav": "Full arrow, tab, and enter navigation on entity tables, evidence drawers, and search autocomplete.",
-    "testing_attribute": "data-testid",
-    "test_id_convention": "kebab-case, role-based (e.g., data-testid='entity-search-input', data-testid='evidence-drawer-toggle', data-testid='publish-assertion-button')"
-  },
-  "instructions_to_main_agent": [
-    "Follow the page order protocol strictly: resposta principal -> dados essenciais -> fontes e contexto -> detalhe -> conteudos relacionados.",
-    "Do not build fake maps or fabricate unverified game statistics. Label unverified content with appropriate evidence tags.",
-    "Always apply data-testid attributes to all interactive elements, inputs, buttons, and evidence toggles.",
-    "Use JavaScript (.js) component syntax exclusively.",
-    "Ensure header and navbars have semi-opaque backdrop blur (never pure 100% transparent background)."
+  "data_testid_preservation_checklist": [
+    "brand-home",
+    "skip-main",
+    "nav-explorar",
+    "nav-encontrar",
+    "nav-resolver",
+    "nav-acompanhar",
+    "nav-guardar",
+    "saved-count",
+    "sidebar-characters",
+    "sidebar-locations",
+    "sidebar-timeline",
+    "sidebar-method",
+    "sidebar-editorial",
+    "mobile-menu-toggle",
+    "current-section",
+    "interface-language",
+    "header-saved",
+    "footer-rights",
+    "mobile-backdrop",
+    "entity-card-{slug}",
+    "entity-open-{slug}",
+    "entity-title-{slug}",
+    "entity-summary-{slug}",
+    "entity-label-{slug}",
+    "save-{slug}"
+  ],
+  "universal_guidelines_for_main_agent": [
+    "DO NOT break existing API endpoints, React router state, or TypeScript typings.",
+    "MUST retain all data-testid attributes listed in the preservation checklist.",
+    "Refactor App.css and refinements.css to apply the new typography scale and color system.",
+    "Use micro-animations (hover transitions 0.2s, subtle lifts) across all interactive buttons and cards.",
+    "Ensure total mobile responsiveness down to 360px screen width without text truncation or overflow."
   ]
 }

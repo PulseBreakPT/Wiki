@@ -1,0 +1,55 @@
+{
+  "summary": "Frontend-only regression completed on public URL. TypeScript compile and production build pass; core desktop/mobile navigation, search, entity, save/remove, timeline, methodology, and responsive checks largely pass. Main blocker found in editorial login integration.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [
+      {
+        "flow": "Editorial login (/redacao)",
+        "issue": "Valid provided credentials could not authenticate; UI shows 'Origem não autorizada' and network returns 403 on /api/v1/auth/login.",
+        "affected_selectors": [
+          "[data-testid=login-email]",
+          "[data-testid=login-password]",
+          "[data-testid=login-submit]",
+          "[data-testid=login-error]"
+        ]
+      }
+    ],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/frontend/src/components/ArchiveSearch.tsx",
+    "/app/frontend/src/components/ArchiveLayout.tsx",
+    "/app/frontend/src/pages/Explore.tsx",
+    "/app/frontend/src/pages/Find.tsx",
+    "/app/frontend/src/pages/EntityDetail.tsx",
+    "/app/frontend/src/pages/Editorial.tsx",
+    "/app/frontend/src/styles/responsive.css",
+    "/root/.emergent/automation_output/20260925_092934/console_20260925_092934.log"
+  ],
+  "action_items": [
+    "Fix editorial auth origin handling for public preview domain so provided editor credentials can sign in (403 on /api/v1/auth/login).",
+    "After auth fix, retest read-only private editorial tabs (fila/entidades/fontes) using same credentials.",
+    "Populate /app/memory/test_credentials.md with current valid accounts for future test agents."
+  ],
+  "critical_code_review_comments": [
+    "Build safety is good: yarn tsc --noEmit and yarn build both pass after redesign.",
+    "Category count rendering uses truthy check (stats?.types?.[id]) in Explore.tsx; if any real category count is 0, UI will show 'A aguardar evidência' instead of '00 entidades documentadas'.",
+    "Timeline rendering has no explicit empty-state fallback; if /timeline ever returns empty, section becomes visually sparse without user guidance."
+  ],
+  "updated_files": [
+    "/app/test_reports/iteration_2.json"
+  ],
+  "success_rate": {
+    "backend": "N/A (not requested)",
+    "frontend": "88%"
+  },
+  "seed_data_creation": "None",
+  "retest_needed": true,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Executed Playwright checks on external URL for desktop and mobile (390/360). Verified no horizontal overflow at 390/360, mobile bottom nav works, desktop sidebar nav hidden on mobile, menu closes via Escape, autocomplete stays within viewport, save/remove flow works, and world/category/entity navigations work. Editorial login blocked by 403 'Origem não autorizada', so private tabs could not be validated in this run.",
+  "rca of the issue": "Repro: open /redacao -> fill editor@viarchive.pt / xuToEVZpqyVGmomzaP7x -> submit. Result: inline error 'Origem não autorizada'; browser console shows 403 on /api/v1/auth/login. Likely root cause is backend origin validation/CORS/allowed-origin mismatch for this preview execution context rather than credential format itself. Mitigation: verify allowed origins list and auth origin checks include current preview domain/protocol exactly, then retest login and read-only tab access."
+}

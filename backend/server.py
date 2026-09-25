@@ -3,7 +3,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
-from core import db, client, ORIGIN
+from core import db, client, public_origin
 from seed import seed_archive
 from knowledge import router as knowledge_router
 from editorial import router as editorial_router
@@ -19,7 +19,12 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(title="VI Archive API", version="1.0.0", lifespan=lifespan,
               docs_url="/api/docs", openapi_url="/api/openapi.json")
-app.add_middleware(CORSMiddleware, allow_origins=[ORIGIN], allow_credentials=True,
+class ConfiguredOriginCORS(CORSMiddleware):
+    def is_allowed_origin(self, origin: str) -> bool:
+        return origin == public_origin()
+
+
+app.add_middleware(ConfiguredOriginCORS, allow_origins=[], allow_credentials=True,
                    allow_methods=["GET", "POST", "PUT", "DELETE"],
                    allow_headers=["Content-Type", "X-CSRF-Token", "If-None-Match"])
 
@@ -28,7 +33,7 @@ app.add_middleware(CORSMiddleware, allow_origins=[ORIGIN], allow_credentials=Tru
 async def security_headers(request: Request, call_next):
     if request.method not in ("GET", "HEAD", "OPTIONS"):
         origin = request.headers.get("origin")
-        if origin and origin != ORIGIN:
+        if origin and origin != public_origin():
             return JSONResponse({"detail": "Origem não autorizada."}, status_code=403)
     response = await call_next(request)
     response.headers["X-Content-Type-Options"] = "nosniff"

@@ -1,9 +1,10 @@
 import os
 import uuid
 import unicodedata
+from functools import lru_cache
 from pathlib import Path
 from datetime import datetime, timezone
-from dotenv import load_dotenv
+from dotenv import load_dotenv, dotenv_values
 from motor.motor_asyncio import AsyncIOMotorClient
 
 ROOT = Path(__file__).parent
@@ -12,6 +13,20 @@ load_dotenv(ROOT.parent / 'frontend' / '.env')
 client = AsyncIOMotorClient(os.environ['MONGO_URL'])
 db = client[os.environ['DB_NAME']]
 ORIGIN = os.environ['REACT_APP_BACKEND_URL'].rstrip('/')
+FRONTEND_ENV = ROOT.parent / 'frontend' / '.env'
+
+
+@lru_cache(maxsize=1)
+def _origin_at_config_version(modified_at):
+    # The protected frontend configuration can be refreshed independently of
+    # the API process. Never accept arbitrary Host or X-Forwarded-Host values.
+    return dotenv_values(FRONTEND_ENV)['REACT_APP_BACKEND_URL'].rstrip('/')
+
+
+def public_origin():
+    if FRONTEND_ENV.is_file():
+        return _origin_at_config_version(FRONTEND_ENV.stat().st_mtime_ns)
+    return os.environ['REACT_APP_BACKEND_URL'].rstrip('/')
 
 
 def now():
