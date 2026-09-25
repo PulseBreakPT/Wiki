@@ -5,6 +5,11 @@ import {useSaved} from '../lib/saved';
 import {Button} from './ui/button';
 import {ArchiveSearch} from './ArchiveSearch';
 
+const equipmentNavigation = [
+  {to: '/armas', label: 'Armas', tone: 'pink'},
+  {to: '/veiculos', label: 'Veículos', tone: 'amber'},
+];
+
 const navigation = [
   {to: '/', label: 'Explorar', icon: Compass, tone: 'pink'},
   {to: '/encontrar', label: 'Encontrar', icon: Search, tone: 'cyan'},
@@ -41,7 +46,7 @@ export const ArchiveLayout = () => {
   }, [menu]);
 
   return (
-    <div className="archive-shell">
+    <div className="archive-shell" data-area={location.pathname.split('/')[1] || 'explorar'}>
       <a className="skip-link" href="#main-content" data-testid="skip-main">Saltar para o conteúdo</a>
       <aside id="archive-sidebar" className={`sidebar ${menu ? 'mobile-open' : ''}`} aria-label="O arquivo">
         <div className="sidebar-brand-row"><Brand/><button ref={closeButton} className="sidebar-close" aria-label="Fechar menu" data-testid="sidebar-close" onClick={() => setMenu(false)}><X size={20}/></button></div>
@@ -58,6 +63,7 @@ export const ArchiveLayout = () => {
         <div className="sidebar-section-label">DENTRO DE LEONIDA</div>
         <Link to="/encontrar?tipo=personagem" className="subnav" data-testid="sidebar-characters"><span className="tiny-square pink"/>Personagens<ArrowUpRight size={14}/></Link>
         <Link to="/encontrar?tipo=local" className="subnav" data-testid="sidebar-locations"><span className="tiny-square cyan"/>Locais e regiões<ArrowUpRight size={14}/></Link>
+        {equipmentNavigation.map(({to, label, tone}) => <NavLink key={to} to={to} className={({isActive}) => `subnav tone-${tone} ${isActive ? 'active' : ''}`} data-testid={`sidebar-${to.slice(1)}`}><span className={`tiny-square ${tone}`}/>{label}<ArrowUpRight size={14}/></NavLink>)}
         <Link to="/acompanhar" className="subnav" data-testid="sidebar-timeline"><span className="tiny-square amber"/>Cronologia<ArrowUpRight size={14}/></Link>
         <div className="sidebar-bottom">
           <Link to="/metodologia" className="archive-note" data-testid="sidebar-method"><Asterisk size={25}/><strong>Menos ruído.<br/>Mais evidência.</strong><p>Cada descoberta começa numa fonte.</p><span>O nosso compromisso <ArrowRight size={14}/></span></Link>
@@ -76,7 +82,10 @@ export const ArchiveLayout = () => {
           <Link className="header-saved" to="/guardar" title="Os meus guardados" aria-label="Os meus guardados" data-testid="header-saved"><Bookmark size={19}/>{saved.length > 0 && <span className="header-saved-dot"/>}</Link>
         </header>
         <main id="main-content"><Outlet/></main>
-        <footer className="page-footer"><div><span className="footer-logo">VI / ARCHIVE</span><span>Um mundo de informação. Uma fonte de cada vez.</span></div><Link to="/metodologia" data-testid="footer-rights">Independente. Não afiliado à Rockstar Games.<ArrowUpRight size={14}/></Link></footer>
+        <footer className="page-footer">
+          <div className="footer-top"><Link to="/" className="footer-statement" aria-label="VI Archive, voltar ao início">UM MUNDO.<br/><span>UMA FONTE DE CADA VEZ.</span></Link><div className="footer-directory"><span className="section-kicker">CONTINUE A DESCOBRIR</span><div>{[...navigation, ...equipmentNavigation].map(({to, label}) => <Link key={to} to={to}>{label}<ArrowUpRight size={14}/></Link>)}</div></div></div>
+          <div className="footer-bottom"><span className="footer-logo">VI / ARCHIVE</span><span className="footer-edition">THE LEONIDA FILES — ARQUIVO INDEPENDENTE</span><Link to="/metodologia" data-testid="footer-rights">Não afiliado à Rockstar Games.<ArrowUpRight size={14}/></Link></div>
+        </footer>
       </div>
       <nav className="mobile-bottom-nav" aria-label="Navegação rápida">
         {navigation.map(({to, label, icon: Icon, tone}) => <NavLink key={to} to={to} end={to === '/'} data-testid={`mobile-nav-${label.toLowerCase()}`} className={({isActive}) => `tone-${tone} ${isActive || (to === '/' && location.pathname.startsWith('/entidade/')) ? 'active' : ''}`}><Icon size={21} strokeWidth={1.7}/><span>{label}</span></NavLink>)}

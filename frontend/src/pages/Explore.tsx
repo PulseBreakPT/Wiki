@@ -37,16 +37,17 @@ export default function Explore() {
         <div className="hero-shade"/>
         <div className="hero-topline"><span data-testid="hero-edition"><span className="status-dot"/> THE LEONIDA FILES</span><span className="hero-index" data-testid="hero-game-label">GRAND THEFT AUTO VI</span></div>
         <motion.div className="hero-content" initial={reducedMotion ? false : {opacity: 0, y: 16}} animate={{opacity: 1, y: 0}} transition={{duration: 0.65, ease: 'easeOut'}}>
-          <span className="eyebrow" data-testid="hero-eyebrow">UM MUNDO PARA DESCOBRIR. FONTES PARA CONFIAR.</span>
-          <h1 id="explore-title" data-testid="explore-title">LEONIDA,<br/><span>EM ARQUIVO.</span></h1>
-          <p data-testid="explore-intro">Pessoas, lugares e histórias de GTA VI.<br/>Cada detalhe ligado à sua origem.</p>
+          <span className="eyebrow" data-testid="hero-eyebrow"><span className="hero-label-line"/> UM ARQUIVO INDEPENDENTE. UM UNIVERSO INTEIRO.</span>
+          <h1 id="explore-title" data-testid="explore-title">LEONIDA.<br/><span>EM ARQUIVO.</span></h1>
+          <p data-testid="explore-intro">Por trás de cada nome, uma história.<br/>Por trás de cada detalhe, uma fonte.</p>
           <form className="hero-search" role="search" onSubmit={event => {event.preventDefault(); navigate(`/encontrar?q=${encodeURIComponent(query)}`);}}>
             <Search size={21}/><input data-testid="hero-search-input" maxLength={100} aria-label="O que procura em Leonida?" placeholder="O que procura em Leonida?" value={query} onChange={event => setQuery(event.target.value)}/>
             <button type="submit" data-testid="hero-search-submit" aria-label="Pesquisar"><ArrowRight size={22}/></button>
           </form>
           <div className="quick-searches"><span>COMECE POR</span>{['Lucia Caminos', 'Vice City', 'Leonida Keys'].map(name => <Link key={name} to={`/encontrar?q=${encodeURIComponent(name)}`} data-testid={`quick-${name.toLowerCase().replaceAll(' ', '-')}`}>{name}<ArrowUpRight size={12}/></Link>)}</div>
         </motion.div>
-        <div className="hero-caption"><span className="hero-caption-cross" aria-hidden="true">+</span><div><span data-testid="hero-artwork-name">JASON & LUCIA</span><span className="image-credit" data-testid="hero-artwork-credit">ARTE OFICIAL / ROCKSTAR GAMES</span></div><ArrowUpRight size={16}/></div>
+        <Link to="/entidade/jason-duval" className="hero-dossier" data-testid="hero-featured-dossier"><span className="hero-dossier-index">01 / EM DESTAQUE</span><span className="hero-dossier-title">O homem por trás<br/>do nome.</span><span className="hero-dossier-link">Conhecer Jason Duval <ArrowUpRight size={18}/></span></Link>
+        <div className="hero-caption"><span className="hero-caption-cross" aria-hidden="true">+</span><div><span data-testid="hero-artwork-name">JASON & LUCIA</span><span className="image-credit" data-testid="hero-artwork-credit">ARTE OFICIAL / ROCKSTAR GAMES</span></div></div>
       </section>
 
       <div className="knowledge-strip">
@@ -59,7 +60,7 @@ export default function Explore() {
           <div className="section-heading category-heading"><h2 id="categories-title" data-testid="categories-title">Escolha o seu ponto de partida.</h2><Link to="/encontrar" data-testid="all-categories-link">Todo o arquivo<ArrowUpRight size={16}/></Link></div>
           <div className="category-grid">
             {categories.map(({id, name, icon: Icon, color}) => (
-              <Link to={`/encontrar?tipo=${id}`} className={`category-item tone-${color}`} key={id} data-testid={`category-${id}`}>
+              <Link to={id === 'veiculo' ? '/veiculos' : `/encontrar?tipo=${id}`} className={`category-item tone-${color}`} key={id} data-testid={`category-${id}`}>
                 <span className="category-icon"><Icon size={25} strokeWidth={1.5}/></span>
                 <div><h3>{name}</h3><span data-testid={`category-count-${id}`}>{!stats ? 'A consultar o arquivo…' : typeof stats.types[id] === 'number' ? `${String(stats.types[id]).padStart(2, '0')} entidades documentadas` : 'A aguardar evidência'}</span></div>
                 <ArrowUpRight size={18}/>
@@ -85,7 +86,7 @@ export default function Explore() {
         </section>
 
         <section className="bottom-editorial">
-          <div className="editorial-spotlight"><span className="section-kicker"><Radio size={15}/> A HISTÓRIA, EM TEMPO REAL</span><h2>A caminho de Leonida.</h2><p>Os trailers e os anúncios que construíram a história de Grand Theft Auto VI.</p><Link to="/acompanhar" className="text-link" data-testid="explore-timeline">Percorrer a cronologia<ArrowRight size={16}/></Link></div>
+          <div className="editorial-spotlight"><img src="/media/hero-city.webp" alt="" loading="lazy"/><span className="section-kicker"><Radio size={15}/> A HISTÓRIA, EM TEMPO REAL</span><h2>A caminho de Leonida.</h2><p>Os trailers e os anúncios que construíram a história de Grand Theft Auto VI.</p><Link to="/acompanhar" className="text-link" data-testid="explore-timeline">Percorrer a cronologia<ArrowRight size={16}/></Link></div>
           <div className="editorial-principle"><ScanLine size={34} strokeWidth={1.3}/><div><span className="section-kicker">O NOSSO COMPROMISSO</span><h3>Uma afirmação.<br/>A sua evidência.</h3><p>A origem e a verificação são coisas diferentes. Aqui, essa diferença fica à vista.</p><Link to="/metodologia" data-testid="explore-evidence-method">Conhecer os critérios editoriais<ArrowUpRight size={16}/></Link></div><Asterisk className="principle-asterisk" size={45} strokeWidth={1}/></div>
         </section>
       </div>
