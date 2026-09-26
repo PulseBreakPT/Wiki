@@ -3,7 +3,7 @@ import {useEffect} from 'react';
 import {Toaster} from 'sonner';
 import {ArchiveLayout} from './components/ArchiveLayout';
 import {SavedProvider} from './lib/saved';
-import Explore from './pages/Explore';
+import Explore from './pages/CinemaExplore';
 import Find from './pages/Find';
 import EntityDetail from './pages/EntityDetail';
 import Saved from './pages/Saved';

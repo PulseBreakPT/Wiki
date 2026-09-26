@@ -5,3 +5,5 @@
 @import './styles/responsive.css';
 @import './styles/edition.css';
 @import './styles/edition-responsive.css';
+@import './styles/cinema.css';
+@import './styles/cinema-mobile.css';

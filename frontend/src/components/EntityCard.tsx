@@ -11,14 +11,14 @@ const types = {
   sistema: {label: 'Sistema', icon: Layers3, tone: 'green'},
 };
 
-export const EntityCard = ({entity, compact = false}: {entity: Entity; compact?: boolean}) => {
+export const EntityCard = ({entity, compact = false, poster = false}: {entity: Entity; compact?: boolean; poster?: boolean}) => {
   const {saved, toggle} = useSaved();
   const marked = saved.includes(entity.id);
   const type = types[entity.type as keyof typeof types] || types.sistema;
   const Icon = type.icon;
 
   return (
-    <article className={`entity-card tone-${type.tone} ${compact ? 'compact' : ''}`} data-testid={`entity-card-${entity.slug}`}>
+    <article className={`entity-card tone-${type.tone} ${compact ? 'compact' : ''} ${poster ? 'poster-card' : ''}`} data-entity={entity.slug} data-testid={`entity-card-${entity.slug}`}>
       <Link to={`/entidade/${entity.slug}`} className="entity-image-link" data-testid={`entity-open-${entity.slug}`}>
         {entity.image ? <img src={entity.image} alt={entity.name} loading="lazy" style={{objectPosition: entity.image_position}}/> : <div className="image-empty"><FileText size={36}/></div>}
         <span className="image-tint"/>

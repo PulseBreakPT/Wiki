@@ -30,6 +30,8 @@ export const ArchiveLayout = () => {
   const [menu, setMenu] = useState(false);
   const location = useLocation();
   const {saved} = useSaved();
+  const activeTitle = location.pathname.startsWith('/entidade/') ? 'Dossiê' : ({'/':'Explorar', '/encontrar':'Encontrar', '/guardar':'Guardados', '/resolver':'Guias', '/acompanhar':'Cronologia', '/metodologia':'O compromisso', '/redacao':OFFLINE ? 'Edição offline' : 'Redação', '/armas':'Armas', '/veiculos':'Veículos'}[location.pathname] || 'Arquivo');
+  const sidebar = useRef<HTMLElement>(null);
   const menuButton = useRef<HTMLButtonElement>(null);
   const closeButton = useRef<HTMLButtonElement>(null);
 
@@ -41,15 +43,24 @@ export const ArchiveLayout = () => {
     document.body.style.overflow = 'hidden';
     const close = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {setMenu(false); menuButton.current?.focus();}
+      if (event.key === 'Tab') {
+        const controls = Array.from(sidebar.current?.querySelectorAll<HTMLElement>('a[href],button:not([disabled])') || []).filter(element => element.getClientRects().length);
+        const first = controls[0], last = controls[controls.length - 1];
+        if (event.shiftKey && document.activeElement === first) {event.preventDefault(); last?.focus();}
+        else if (!event.shiftKey && document.activeElement === last) {event.preventDefault(); first?.focus();}
+      }
     };
+    const wideScreen = window.matchMedia('(min-width: 901px)');
+    const restoreDesktop = () => {if (wideScreen.matches) setMenu(false);};
+    wideScreen.addEventListener('change', restoreDesktop);
     document.addEventListener('keydown', close);
-    return () => {document.body.style.overflow = previous; document.removeEventListener('keydown', close);};
+    return () => {document.body.style.overflow = previous; document.removeEventListener('keydown', close); wideScreen.removeEventListener('change', restoreDesktop);};
   }, [menu]);
 
   return (
-    <div className="archive-shell" data-area={location.pathname.split('/')[1] || 'explorar'}>
+    <div className="archive-shell cinema-shell" data-area={location.pathname.split('/')[1] || 'explorar'}>
       <a className="skip-link" href="#main-content" data-testid="skip-main">Saltar para o conteúdo</a>
-      <aside id="archive-sidebar" className={`sidebar ${menu ? 'mobile-open' : ''}`} aria-label="O arquivo">
+      <aside ref={sidebar} id="archive-sidebar" className={`sidebar ${menu ? 'mobile-open' : ''}`} role={menu ? 'dialog' : undefined} aria-modal={menu || undefined} aria-label="O arquivo">
         <div className="sidebar-brand-row"><Brand/><button ref={closeButton} className="sidebar-close" aria-label="Fechar menu" data-testid="sidebar-close" onClick={() => setMenu(false)}><X size={20}/></button></div>
         <div className="sidebar-section-label"><span>O ARQUIVO</span><span>01 — 05</span></div>
         <nav aria-label="Navegação principal">
@@ -76,10 +87,10 @@ export const ArchiveLayout = () => {
       <div className="workspace">
         <header className="topbar">
           <Button ref={menuButton} variant="ghost" size="icon" className="mobile-toggle" data-testid="mobile-menu-toggle" aria-label={menu ? 'Fechar menu' : 'Abrir menu'} aria-expanded={menu} aria-controls="archive-sidebar" onClick={() => setMenu(!menu)}>{menu ? <X/> : <Menu/>}</Button>
-          <Link to="/" className="mobile-brand" aria-label="VI Archive, início" data-testid="mobile-brand-home">VI<span>↗</span></Link>
-          <div className="breadcrumb" data-testid="current-section"><span className="header-cross" aria-hidden="true">+</span><span>O universo de</span><b>GRAND THEFT AUTO VI</b></div>
+          <Link to="/" className="mobile-brand" aria-label="VI Archive, início" data-testid="mobile-brand-home"><span className="mobile-logo-mark">VI<small>↗</small></span><span className="mobile-wordmark">ARCHIVE<small>THE LEONIDA FILES</small></span></Link>
+          <div className="breadcrumb" data-testid="current-section"><span>LEONIDA FILES</span><span className="breadcrumb-divider" aria-hidden="true">/</span><b>{activeTitle}</b></div>
           <ArchiveSearch/>
-          <span className="language" data-testid="interface-language"><Globe2 size={16}/> {OFFLINE ? 'OFFLINE · PT' : 'PT'}</span>
+          <span className="language" data-testid="interface-language">{OFFLINE ? <span className="status-dot"/> : <Globe2 size={14}/>} {OFFLINE ? 'OFFLINE' : 'PT'}</span>
           <Link className="header-saved" to="/guardar" title="Os meus guardados" aria-label="Os meus guardados" data-testid="header-saved"><Bookmark size={19}/>{saved.length > 0 && <span className="header-saved-dot"/>}</Link>
         </header>
         <main id="main-content"><Outlet/></main>
@@ -89,7 +100,7 @@ export const ArchiveLayout = () => {
         </footer>
       </div>
       <nav className="mobile-bottom-nav" aria-label="Navegação rápida">
-        {navigation.map(({to, label, icon: Icon, tone}) => <NavLink key={to} to={to} end={to === '/'} data-testid={`mobile-nav-${label.toLowerCase()}`} className={({isActive}) => `tone-${tone} ${isActive || (to === '/' && location.pathname.startsWith('/entidade/')) ? 'active' : ''}`}><Icon size={21} strokeWidth={1.7}/><span>{label}</span></NavLink>)}
+        {navigation.map(({to, label, icon: Icon, tone}) => <NavLink key={to} to={to} end={to === '/'} data-testid={`mobile-nav-${label.toLowerCase()}`} className={({isActive}) => `tone-${tone} ${isActive || (to === '/' && location.pathname.startsWith('/entidade/')) ? 'active' : ''}`}><span className="dock-icon"><Icon size={21} strokeWidth={1.7}/></span><span className="dock-label">{label}</span>{to === '/guardar' && saved.length > 0 && <span className="dock-saved-dot" aria-hidden="true"/>}</NavLink>)}
       </nav>
       {menu && <button className="mobile-backdrop" aria-label="Fechar navegação" data-testid="mobile-backdrop" onClick={() => setMenu(false)}/>}
     </div>
