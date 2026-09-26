@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">VI Archive</string>
+    <!-- Android reserved virtual asset origin: not a hosted server or a backend URL. -->
+    <string name="asset_host" translatable="false">appassets.androidplatform.net</string>
+</resources>

@@ -4,6 +4,7 @@ import {Compass, Search, BookOpen, Radio, Bookmark, ArrowUpRight, Globe2, Menu, 
 import {useSaved} from '../lib/saved';
 import {Button} from './ui/button';
 import {ArchiveSearch} from './ArchiveSearch';
+import {OFFLINE} from '../lib/offline';
 
 const equipmentNavigation = [
   {to: '/armas', label: 'Armas', tone: 'pink'},
@@ -67,7 +68,7 @@ export const ArchiveLayout = () => {
         <Link to="/acompanhar" className="subnav" data-testid="sidebar-timeline"><span className="tiny-square amber"/>Cronologia<ArrowUpRight size={14}/></Link>
         <div className="sidebar-bottom">
           <Link to="/metodologia" className="archive-note" data-testid="sidebar-method"><Asterisk size={25}/><strong>Menos ruído.<br/>Mais evidência.</strong><p>Cada descoberta começa numa fonte.</p><span>O nosso compromisso <ArrowRight size={14}/></span></Link>
-          <Link to="/redacao" className="editor-link" data-testid="sidebar-editorial"><PenLine size={16}/> Redação <ArrowUpRight size={15}/></Link>
+          <Link to="/redacao" className="editor-link" data-testid="sidebar-editorial"><PenLine size={16}/> {OFFLINE ? 'Sobre esta edição offline' : 'Redação'} <ArrowUpRight size={15}/></Link>
           <div className="sidebar-footer"><span className="status-dot"/> INDEPENDENTE <span>V.01 / PT</span></div>
         </div>
       </aside>
@@ -78,7 +79,7 @@ export const ArchiveLayout = () => {
           <Link to="/" className="mobile-brand" aria-label="VI Archive, início" data-testid="mobile-brand-home">VI<span>↗</span></Link>
           <div className="breadcrumb" data-testid="current-section"><span className="header-cross" aria-hidden="true">+</span><span>O universo de</span><b>GRAND THEFT AUTO VI</b></div>
           <ArchiveSearch/>
-          <span className="language" data-testid="interface-language"><Globe2 size={16}/> PT</span>
+          <span className="language" data-testid="interface-language"><Globe2 size={16}/> {OFFLINE ? 'OFFLINE · PT' : 'PT'}</span>
           <Link className="header-saved" to="/guardar" title="Os meus guardados" aria-label="Os meus guardados" data-testid="header-saved"><Bookmark size={19}/>{saved.length > 0 && <span className="header-saved-dot"/>}</Link>
         </header>
         <main id="main-content"><Outlet/></main>

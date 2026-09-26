@@ -1,0 +1,54 @@
+plugins { id 'com.android.application' }
+
+def code = (System.getenv('VERSION_CODE') ?: '1').toInteger()
+if (code < 1 || code > 2100000000) throw new GradleException('VERSION_CODE must be between 1 and 2100000000')
+def keystorePath = System.getenv('ANDROID_KEYSTORE')
+def releaseRequested = gradle.startParameter.taskNames.any { it.toLowerCase().contains('release') }
+if (releaseRequested) {
+    ['ANDROID_KEYSTORE', 'ANDROID_STORE_PASSWORD', 'ANDROID_KEY_ALIAS', 'ANDROID_KEY_PASSWORD'].each {
+        if (!System.getenv(it)) throw new GradleException("Missing permanent signing configuration: ${it}. No temporary key will be generated.")
+    }
+    if (!file(keystorePath).isFile()) throw new GradleException('Permanent keystore file does not exist')
+}
+
+android {
+    namespace 'pt.viarchive.app'
+    compileSdk 35
+    buildToolsVersion '35.0.0'
+    defaultConfig {
+        applicationId 'pt.viarchive.app'
+        minSdk 26
+        targetSdk 35
+        versionCode code
+        versionName System.getenv('VERSION_NAME') ?: '1.0.0'
+    }
+    signingConfigs {
+        release {
+            if (keystorePath) {
+                storeFile file(keystorePath)
+                storePassword System.getenv('ANDROID_STORE_PASSWORD')
+                keyAlias System.getenv('ANDROID_KEY_ALIAS')
+                keyPassword System.getenv('ANDROID_KEY_PASSWORD')
+            }
+        }
+    }
+    buildTypes {
+        debug { applicationIdSuffix '.debug'; versionNameSuffix '-debug' }
+        release { minifyEnabled false; signingConfig signingConfigs.release }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+    lint { abortOnError true }
+}
+dependencies { implementation 'androidx.webkit:webkit:1.12.1' }
+
+tasks.register('verifyOfflineAssets') {
+    doLast {
+        ['index.html', 'data/archive.json', 'media/hero-city.webp'].each {
+            if (!file("src/main/assets/www/${it}").isFile()) throw new GradleException('Run yarn build:offline in frontend before compiling Android')
+        }
+    }
+}
+tasks.named('preBuild').configure { dependsOn 'verifyOfflineAssets' }

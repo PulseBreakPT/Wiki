@@ -1,0 +1,8 @@
+.gradle/
+local.properties
+**/build/
+app/src/main/assets/www/
+*.jks
+*.keystore
+*.p12
+*.b64

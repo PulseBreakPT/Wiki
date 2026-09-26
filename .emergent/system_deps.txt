@@ -1,0 +1,2 @@
+aapt=1:10.0.0+r36-10
+openjdk-17-jdk-headless=17.0.20.1+1-1~deb12u1

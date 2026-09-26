@@ -116,6 +116,17 @@ Primeira implementação funcional, não conclusão da arquitetura de uma décad
 5. Internacionalização editorial, analytics consentidos/minimizados e agrupamento de pesquisas sem resposta.
 6. Importações/deduplicação auditadas, automação assistiva sem publicação autónoma, API externa licenciada/quota.
 
+## Android offline — pedido confirmado
+
+- Utilizador escolheu APK sem URL HTTPS, totalmente offline (opção A) e assinatura permanente (opção B).
+- Implementado exportador read-only do corpus oficial versionado em `backend/seed.py`: 12 entidades, 20 afirmações, fontes/evidências/relações/histórico inicial e cronologia. Não exporta dados de um servidor nem inventa conteúdo.
+- `yarn build:offline` gera bundle separado com fontes locais/licenças e imagens. `REACT_APP_OFFLINE=true` seleciona consultas locais compatíveis com a API pública; website online mantém configuração existente. Nenhuma alteração no backend ou nos `.env`.
+- Login/redação indisponíveis explicitamente no APK. Favoritos/checklist locais mantidos; exportação JSON preparada para seletor nativo. Ligações externas precisam de Internet fora da aplicação.
+- Projeto Java Android em `android/`: WebViewAssetLoader local, bloqueio de rede, sem permissão INTERNET, navegação voltar, insets, exportação restrita. AGP8.9.1/Gradle8.11.1/JDK17/SDK35/WebKit1.12.1, pacote `pt.viarchive.app`.
+- Workflow `.github/workflows/android-apk.yml`: cada push/dispatch compila e verifica release com chave permanente vinda de quatro GitHub Secrets; sem chave efémera/fallback debug. APK/checksum/certificado/versão em artefactos. Segredos e execução GitHub ainda não configurados pelo proprietário.
+- `docs/ANDROID.md` explica criação única/backup da chave, configuração, downloads e atualizações. Sem publicação Play Store ou instalação automática.
+- Verificado até agora: exportação do corpus, TypeScript, lint dos ficheiros alterados e build offline bem-sucedidos. Build Android e testes delegados em curso; testes UI dependem de autorização. Ambiente de fork sem `.env`; não restaurar URLs por suposição. Apenas `/app` persiste entre recriações, usar `.cache` para toolchains.
+
 ## Próximas ações sugeridas
 
 1. Confirmar identidade/idioma e nomear responsáveis editoriais.
