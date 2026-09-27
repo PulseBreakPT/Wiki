@@ -5,6 +5,7 @@ Official, Development, Unknown and Reported remain distinct editorial states.
 """
 from __future__ import annotations
 
+import gzip
 import json
 import lzma
 from collections import Counter
@@ -25,7 +26,9 @@ STATE_APPLICABILITY = {
 }
 
 def load_sss_corpus():
-    data = json.loads(lzma.decompress(SSS_CORPUS_PATH.read_bytes()).decode("utf-8"))
+    raw = SSS_CORPUS_PATH.read_bytes()
+    payload = gzip.decompress(raw) if raw.startswith(b"\\x1f\\x8b") else lzma.decompress(raw)
+    data = json.loads(payload.decode("utf-8"))
     if data.get("schema_version") != 1 or not isinstance(data.get("entities"), list):
         raise ValueError("Unsupported SSS corpus schema.")
     ids = [entity["id"] for entity in data["entities"]]
