@@ -127,6 +127,7 @@ def initial_claims():
       claim('ambrosia', 'Presença oficial', 'Destino apresentado oficialmente em Leonida.', 'Explore Ambrosia'),
       claim('mount-kalaga', 'Presença oficial', 'Destino apresentado oficialmente em Leonida.', 'Explore Mount Kalaga'),
       claim('leonida', 'Cenário', 'Estado onde se desenrola a conspiração que envolve Jason e Lucia.', 'in the middle of a criminal conspiracy stretching across the state of Leonida', source='rockstar-gta-vi'),
+      claim('leonida', 'Referência GTA Wiki/Fandom', 'A GTA Wiki/Fandom também identifica Leonida como o estado onde decorre GTA VI.', 'A página comunitária apresenta Leonida como o estado central do jogo.', source='gta-fandom-gta6', origin='comunidade', nature='declaracao', applicability='Confirmação cruzada de um facto básico já suportado pela Rockstar.', locator='Grand Theft Auto VI > Overview'),
     ]
     return claims
 
@@ -148,6 +149,7 @@ async def seed_archive():
       {'id':'gtabase-weapons','title':'GTA 6 Weapons List','url':'https://www.gtabase.com/gta-6/weapons/','publisher':'GTABase','rights':'Fonte comunitária consultada para referência factual. Texto do VI Archive é reformulado e não reproduz a página de origem.'},
       {'id':'gtabase-vehicles','title':'GTA 6 Cars & Vehicles Database','url':'https://www.gtabase.com/gta-6/vehicles/','publisher':'GTABase','rights':'Fonte comunitária consultada para referência factual. Texto do VI Archive é reformulado e não reproduz a página de origem.'},
       {'id':'grand-theft-wiki-gta6','title':'Grand Theft Auto VI','url':'https://www.grandtheftwiki.com/GTA_VI','publisher':'Grand Theft Wiki','rights':'Fonte comunitária consultada para confirmação cruzada. O VI Archive usa redação própria e mantém ligação para a origem.'},
+      {'id':'gta-fandom-gta6','title':'Grand Theft Auto VI','url':'https://gta.fandom.com/wiki/Grand_Theft_Auto_VI','publisher':'GTA Wiki / Fandom','rights':'Fonte comunitária consultada para confirmação cruzada. O VI Archive usa redação própria e não reproduz a página de origem.'},
     ]
     default_rights = '© Rockstar Games. Material promocional disponibilizado na galeria oficial para download e partilha; sem licença aberta declarada. Referência editorial com redação própria.'
     for source in sources:
