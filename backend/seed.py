@@ -1,8 +1,9 @@
 """Small, sourced editorial corpus. No invented game statistics or test records."""
-from core import db, now, project
+from core import db, now, project, current_publication
 
 SOURCE_URL = 'https://www.rockstargames.com/VI/only-in-leonida'
 SOURCE_ID = 'rockstar-people-places'
+CORPUS_REVISION = 2
 
 ENTITIES = [
     ('jason-duval', 'Jason Duval', 'personagem', ['Jason'], 'Depois de uma passagem pelo exército, Jason encontrou nas Keys uma vida entre pequenos criminosos e traficantes locais.', 'jason', '50% 35%'),
@@ -156,22 +157,38 @@ async def seed_archive():
     claims = initial_claims()
     for item in ENTITIES:
         entity_id, name, type_, aliases, summary, image, position = item
-        if await db.publications.find_one({'entity_id':entity_id}):
-            continue
         await db.entities.update_one({'id':entity_id}, {'$setOnInsert':{'id':entity_id,'slug':entity_id,'type':type_,'schema_version':1}}, upsert=True)
         own_claims = [c for c in claims if c['entity_id']==entity_id]
         for assertion in own_claims:
             await db.assertions.update_one({'id':assertion['id']}, {'$setOnInsert':assertion}, upsert=True)
+
+        current = await current_publication(entity_id)
+        if current:
+            # Only advance records that are still managed by the checked-in baseline.
+            # Human/editorial publications remain authoritative and are never overwritten here.
+            managed_authors = {'Importação de fontes oficiais', 'Importação editorial documentada'}
+            if current.get('author_name') not in managed_authors or current.get('version', 0) >= CORPUS_REVISION:
+                continue
+            version = current['version'] + 1
+            pub_id = f'seed-r{CORPUS_REVISION}-{entity_id}'
+            reason = f'Atualização do corpus editorial de base para a revisão {CORPUS_REVISION}.'
+        else:
+            version = 1
+            pub_id = f'initial-{entity_id}'
+            reason = 'Entrada inicial a partir de fontes rastreáveis; o rótulo distingue origem oficial de identificação comunitária.'
+
         label = ENTITY_LABELS.get(entity_id, 'Official')
-        pub = {'id':f'initial-{entity_id}', 'entity_id':entity_id, 'version':1,
+        pub = {'id':pub_id, 'entity_id':entity_id, 'version':version,
                'snapshot':{'slug':entity_id,'name':name,'type':type_,'aliases':aliases,'summary':summary,
                            'image':f'/media/{image}.webp' if image else '','image_position':position,'label':label},
                'assertion_ids':[c['id'] for c in own_claims], 'created_at':now(),
                'author_name':'Importação editorial documentada', 'reviewer_name':'Revisão humana pendente',
-               'reason':'Entrada inicial a partir de fontes rastreáveis; o rótulo distingue origem oficial de identificação comunitária.',
-               'outbox':{'id':f'event-initial-{entity_id}','status':'pending','attempts':0}}
+               'reason':reason,
+               'outbox':{'id':f'event-{pub_id}','status':'pending','attempts':0}}
         await db.publications.update_one({'id':pub['id']},{'$setOnInsert':pub},upsert=True)
-        await project(pub)
+        stored = await db.publications.find_one({'id':pub['id']}, {'_id':0})
+        if stored:
+            await project(stored)
     events = [
       {'id':'extended-look','date':'2026-08-27','title':'An Extended Look','summary':'A Rockstar publicou uma apresentação alargada de Grand Theft Auto VI, capturada integralmente em jogo na PlayStation 5.','source_url':'https://www.rockstargames.com/VI/an-extended-look','type':'Apresentação'},
       {'id':'preorders-2026','date':'2026-06-25','title':'Pré-encomendas abertas','summary':'As pré-encomendas globais de Grand Theft Auto VI abriram, com lançamento anunciado para 19 de novembro de 2026.','source_url':'https://www.rockstargames.com/newswire/article/5171972o3ak5oa/pre-order-grand-theft-auto-vi-on-june-25','type':'Anúncio'},
