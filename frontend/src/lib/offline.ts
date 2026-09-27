@@ -1,6 +1,7 @@
 import {Entity, Revision, Source} from '../types';
 
 export const OFFLINE = process.env.REACT_APP_OFFLINE === 'true';
+const PUBLIC_BASE = (process.env.PUBLIC_URL || '').replace(/\/$/, '');
 type Corpus = {
   schema_version: number; snapshot_at: string; notice: string;
   entities: Entity[]; history: Record<string, Revision[]>; sources: Source[];
@@ -11,10 +12,10 @@ let corpusPromise: Promise<Corpus> | undefined;
 
 async function loadCorpus(): Promise<Corpus> {
   if (!corpusPromise) {
-    corpusPromise = fetch('/data/archive.json').then(async response => {
-      if (!response.ok) throw new Error('O conteúdo desta edição não está disponível. Reinstale o APK.');
+    corpusPromise = fetch(`${PUBLIC_BASE}/data/archive.json`, {cache: 'no-store'}).then(async response => {
+      if (!response.ok) throw new Error('O conteúdo não está disponível neste momento. Atualize a página ou tente novamente.');
       const data = await response.json();
-      if (data.schema_version !== 1 || !Array.isArray(data.entities)) throw new Error('Edição offline incompatível.');
+      if (data.schema_version !== 1 || !Array.isArray(data.entities)) throw new Error('Edição de conteúdo incompatível.');
       return data;
     }).catch(error => {corpusPromise = undefined; throw error;});
   }
@@ -40,7 +41,7 @@ export async function offlineRequest<T>(path: string, options: RequestInit = {})
   abort();
   const [route, query = ''] = path.split('?');
   if ((options.method || 'GET').toUpperCase() !== 'GET' || route.startsWith('/auth') || route.startsWith('/editorial')) {
-    throw new Error('Login e redação não estão disponíveis na edição offline.');
+    throw new Error('Login e redação não estão disponíveis nesta edição.');
   }
   const data = await loadCorpus();
   abort();
@@ -78,14 +79,14 @@ export async function offlineRequest<T>(path: string, options: RequestInit = {})
   } else {
     const match = route.match(/^\/entities\/([^/]+)(?:\/(history|diff))?$/);
     const entity = match && data.entities.find(e => e.slug === decodeURIComponent(match[1]));
-    if (!entity || !match) throw new Error('Esta entidade não existe na edição offline.');
+    if (!entity || !match) throw new Error('Esta entidade não existe nesta edição.');
     if (match[2] === 'history') result = data.history[entity.id] || [];
     else if (match[2] === 'diff') {
       const from = Number(params.get('from_version')), to = Number(params.get('to_version'));
-      if (from !== entity.version || to !== entity.version) throw new Error('Esta publicação não está incluída na edição offline.');
+      if (from !== entity.version || to !== entity.version) throw new Error('Esta publicação não está incluída nesta edição.');
       result = {entity_id: entity.id, from_version: from, to_version: to, changes: []};
     } else {
-      if (params.has('version') && Number(params.get('version')) !== entity.version) throw new Error('Esta publicação não está incluída na edição offline.');
+      if (params.has('version') && Number(params.get('version')) !== entity.version) throw new Error('Esta publicação não está incluída nesta edição.');
       const linked = new Set(entity.assertions?.map(c => c.related_entity_id).filter(Boolean));
       data.entities.forEach(e => {if (e.assertions?.some(c => c.related_entity_id === entity.id)) linked.add(e.id);});
       result = {...entity, related: data.entities.filter(e => linked.has(e.id)).map(summary)};

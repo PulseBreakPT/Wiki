@@ -69,6 +69,7 @@
     "start": "node scripts/start-preview.cjs",
     "build": "craco build",
     "build:offline": "node scripts/build-offline.cjs",
+    "build:github": "node scripts/build-github.cjs",
     "test": "craco test"
   },
   "browserslist": {
