@@ -63,8 +63,8 @@ def export_corpus():
     claims = scope['initial_claims']()
     entities, history = [], {}
     for entity_id, name, kind, aliases, summary, image, position in scope['ENTITIES']:
-        image_path = f'/media/{image}.webp'
-        if not (ROOT / 'frontend' / 'public' / image_path.lstrip('/')).is_file():
+        image_path = f'/media/{image}.webp' if image else ''
+        if image_path and not (ROOT / 'frontend' / 'public' / image_path.lstrip('/')).is_file():
             raise ValueError(f'Missing offline image: {image_path}')
         own = [{**c, 'source': source_by_id[c['source_id']]} for c in claims if c['entity_id'] == entity_id]
         entity = dict(id=entity_id, slug=entity_id, name=name, type=kind, aliases=aliases,
