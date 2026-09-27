@@ -8,6 +8,7 @@ import ast
 import json
 import os
 import subprocess
+import sys
 from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
@@ -15,6 +16,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / 'backend' / 'seed.py'
 OUTPUT = ROOT / 'frontend' / 'public' / 'data' / 'archive.json'
+sys.path.insert(0, str(ROOT / 'backend'))
+from sss_corpus import merge_offline_corpus
 
 
 def corpus_timestamp():
@@ -85,7 +88,7 @@ def export_corpus():
         raise ValueError('Duplicate identifiers in offline corpus.')
     if any(c.get('related_entity_id') and c['related_entity_id'] not in entity_ids for c in claims):
         raise ValueError('Unresolved entity relation in offline corpus.')
-    return {
+    base = {
         'schema_version': 1, 'snapshot_at': timestamp, 'origin': 'backend/seed.py',
         'notice': 'Conteúdo incluído nesta edição; não sincroniza com um servidor. Datas referem-se à edição do corpus, não a uma nova verificação das fontes.',
         'entities': entities, 'history': history, 'sources': sources,
@@ -94,6 +97,7 @@ def export_corpus():
         'stats': {'entities': len(entities), 'sources': len(sources), 'assertions': len(claims),
                   'types': dict(Counter(e['type'] for e in entities))},
     }
+    return merge_offline_corpus(base)
 
 
 if __name__ == '__main__':

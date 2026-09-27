@@ -1,5 +1,6 @@
 """Small, sourced editorial corpus. No invented game statistics or test records."""
 from core import db, now, project, current_publication
+from sss_corpus import seed_sss_corpus
 
 SOURCE_URL = 'https://www.rockstargames.com/VI/only-in-leonida'
 SOURCE_ID = 'rockstar-people-places'
@@ -200,3 +201,4 @@ async def seed_archive():
     ]
     for event in events:
         await db.timeline.update_one({'id':event['id']}, {'$setOnInsert':event}, upsert=True)
+    await seed_sss_corpus(db, now, project, current_publication)

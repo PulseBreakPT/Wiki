@@ -69,7 +69,7 @@ class SearchResult(PublicModel):
 class Snapshot(BaseModel):
     slug: str = Field(pattern=r'^[a-z0-9]+(?:-[a-z0-9]+)*$', max_length=100)
     name: str = Field(min_length=2, max_length=100)
-    type: Literal['personagem', 'local', 'organizacao', 'veiculo', 'arma', 'sistema']
+    type: Literal['personagem', 'local', 'organizacao', 'veiculo', 'arma', 'sistema', 'animal', 'atividade', 'propriedade', 'radio', 'missao', 'media', 'edicao', 'equipamento']
     summary: str = Field(min_length=15, max_length=1000)
     aliases: list[str] = Field(default_factory=list, max_length=15)
     image: str = Field(default='', max_length=2000)

@@ -53,10 +53,10 @@ async def featured():
 
 
 async def detail_for(pub):
-    assertions = await db.assertions.find({'id':{'$in':pub['assertion_ids']}}, {'_id':0}).to_list(40)
+    assertions = await db.assertions.find({'id':{'$in':pub['assertion_ids']}}, {'_id':0}).to_list(100)
     order = {id:i for i,id in enumerate(pub['assertion_ids'])}
     assertions.sort(key=lambda x:order[x['id']])
-    sources = {s['id']:s for s in await db.sources.find({'id':{'$in':[c['source_id'] for c in assertions]}}, {'_id':0}).to_list(40)}
+    sources = {s['id']:s for s in await db.sources.find({'id':{'$in':[c['source_id'] for c in assertions]}}, {'_id':0}).to_list(100)}
     for assertion in assertions:
         assertion['source'] = sources.get(assertion['source_id'])
     related_ids = set(c['related_entity_id'] for c in assertions if c.get('related_entity_id'))
@@ -119,7 +119,7 @@ async def publication_diff(slug: str, from_version: int = Query(..., ge=1), to_v
             changes.append({'field':label,'before':', '.join(a) if isinstance(a,list) else a,'after':', '.join(b) if isinstance(b,list) else b})
     claim_sets=[]
     for pub in versions:
-        claims=await db.assertions.find({'id':{'$in':pub['assertion_ids']}}, {'_id':0}).to_list(40)
+        claims=await db.assertions.find({'id':{'$in':pub['assertion_ids']}}, {'_id':0}).to_list(100)
         mapping={}
         for claim in claims:
             key=claim['property']
