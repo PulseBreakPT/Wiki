@@ -19,8 +19,6 @@ jobs:
       - uses: actions/setup-node@v4.4.0
         with:
           node-version-file: .nvmrc
-          cache: yarn
-          cache-dependency-path: frontend/yarn.lock
       - name: Use the repository Yarn version
         run: corepack enable && corepack prepare yarn@1.22.22 --activate
       - uses: actions/setup-python@v5
