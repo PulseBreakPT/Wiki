@@ -3,6 +3,7 @@ import {Link, useNavigate} from 'react-router-dom';
 import {Search, ArrowUpRight, ArrowRight, ShieldCheck, UsersRound, MapPin, Car, Layers3, Radio, ScanLine, Asterisk} from 'lucide-react';
 import {motion, useReducedMotion} from 'framer-motion';
 import {api} from '../lib/api';
+import {assetUrl} from '../lib/assets';
 import {Entity} from '../types';
 import {EntityCard} from '../components/EntityCard';
 
@@ -33,7 +34,7 @@ export default function Explore() {
   return (
     <div className="explore-page">
       <section className="explore-hero" aria-labelledby="explore-title">
-        <img className="hero-image" src="/media/hero-keyart.webp" alt="Arte oficial de Jason e Lucia em Leonida, Grand Theft Auto VI" fetchPriority="high"/>
+        <img className="hero-image" src={assetUrl('/media/hero-keyart.webp')} alt="Arte oficial de Jason e Lucia em Leonida, Grand Theft Auto VI" fetchPriority="high"/>
         <div className="hero-shade"/>
         <div className="hero-topline"><span data-testid="hero-edition"><span className="status-dot"/> THE LEONIDA FILES</span><span className="hero-index" data-testid="hero-game-label">GRAND THEFT AUTO VI</span></div>
         <motion.div className="hero-content" initial={reducedMotion ? false : {opacity: 0, y: 16}} animate={{opacity: 1, y: 0}} transition={{duration: 0.65, ease: 'easeOut'}}>
@@ -77,16 +78,16 @@ export default function Explore() {
         <section className="world-section" aria-labelledby="world-title">
           <div className="section-heading"><div><span className="section-kicker"><span className="section-number cyan-number">02</span> PARA LÁ DAS LUZES DA CIDADE</span><h2 id="world-title" data-testid="world-title">Há mais mundo lá fora.</h2></div><Link to="/encontrar?tipo=local" data-testid="world-all-locations">Locais e regiões<ArrowUpRight size={16}/></Link></div>
           <div className="world-panorama">
-            <img src="/media/keys.webp" loading="lazy" alt="Ilhas e pontes de Leonida Keys, imagem oficial da Rockstar Games"/>
+            <img src={assetUrl('/media/keys.webp')} loading="lazy" alt="Ilhas e pontes de Leonida Keys, imagem oficial da Rockstar Games"/>
             <div className="world-panorama-shade"/>
             <div className="world-panorama-content"><span className="eyebrow"><MapPin size={15}/> LEONIDA KEYS</span><p data-testid="world-feature-heading">O outro lado<br/>do paraíso.</p><Link to="/entidade/leonida-keys" data-testid="world-open-keys">Abrir o dossiê<ArrowUpRight size={19}/></Link></div>
             <span className="world-credit">IMAGEM OFICIAL / ROCKSTAR GAMES</span>
           </div>
-          <div className="world-index">{[{slug:'vice-city', name:'Vice City', image:'vice-city'}, {slug:'grassrivers', name:'Grassrivers', image:'grassrivers'}, {slug:'port-gellhorn', name:'Port Gellhorn', image:'port'}].map((place, index) => <Link key={place.slug} to={`/entidade/${place.slug}`} data-testid={`world-location-${place.slug}`}><span className="world-index-number">0{index + 1}</span><img src={`/media/${place.image}.webp`} alt="" loading="lazy"/><span>{place.name}</span><ArrowUpRight size={18}/></Link>)}</div>
+          <div className="world-index">{[{slug:'vice-city', name:'Vice City', image:'vice-city'}, {slug:'grassrivers', name:'Grassrivers', image:'grassrivers'}, {slug:'port-gellhorn', name:'Port Gellhorn', image:'port'}].map((place, index) => <Link key={place.slug} to={`/entidade/${place.slug}`} data-testid={`world-location-${place.slug}`}><span className="world-index-number">0{index + 1}</span><img src={assetUrl(`/media/${place.image}.webp`)} alt="" loading="lazy"/><span>{place.name}</span><ArrowUpRight size={18}/></Link>)}</div>
         </section>
 
         <section className="bottom-editorial">
-          <div className="editorial-spotlight"><img src="/media/hero-city.webp" alt="" loading="lazy"/><span className="section-kicker"><Radio size={15}/> A HISTÓRIA, EM TEMPO REAL</span><h2>A caminho de Leonida.</h2><p>Os trailers e os anúncios que construíram a história de Grand Theft Auto VI.</p><Link to="/acompanhar" className="text-link" data-testid="explore-timeline">Percorrer a cronologia<ArrowRight size={16}/></Link></div>
+          <div className="editorial-spotlight"><img src={assetUrl('/media/hero-city.webp')} alt="" loading="lazy"/><span className="section-kicker"><Radio size={15}/> A HISTÓRIA, EM TEMPO REAL</span><h2>A caminho de Leonida.</h2><p>Os trailers e os anúncios que construíram a história de Grand Theft Auto VI.</p><Link to="/acompanhar" className="text-link" data-testid="explore-timeline">Percorrer a cronologia<ArrowRight size={16}/></Link></div>
           <div className="editorial-principle"><ScanLine size={34} strokeWidth={1.3}/><div><span className="section-kicker">O NOSSO COMPROMISSO</span><h3>Uma afirmação.<br/>A sua evidência.</h3><p>A origem e a verificação são coisas diferentes. Aqui, essa diferença fica à vista.</p><Link to="/metodologia" data-testid="explore-evidence-method">Conhecer os critérios editoriais<ArrowUpRight size={16}/></Link></div><Asterisk className="principle-asterisk" size={45} strokeWidth={1}/></div>
         </section>
       </div>
