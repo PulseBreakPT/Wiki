@@ -3,6 +3,7 @@ import {Link, useNavigate} from 'react-router-dom';
 import {ArrowRight, ArrowUpRight, Bookmark, Compass, Fingerprint, MapPin, Radio, Search, ShieldCheck, UsersRound, CarFront, Layers3} from 'lucide-react';
 import {motion, useReducedMotion} from 'framer-motion';
 import {api} from '../lib/api';
+import {assetUrl} from '../lib/assets';
 import {OFFLINE} from '../lib/offline';
 import {Entity} from '../types';
 import {EntityCard} from '../components/EntityCard';
@@ -41,7 +42,7 @@ export default function CinemaExplore() {
   return <div className="cinema-home">
     <div className="cinema-masthead"><span><Compass size={14}/> UM UNIVERSO PARA DESCOBRIR</span><span>INDEPENDENTE. POR PRINCÍPIO.</span></div>
     <section className="cinema-cover" aria-labelledby="explore-title">
-      <img className="cinema-cover-art" src="/media/hero-keyart.webp" alt="Arte oficial de Jason e Lucia em Leonida, Grand Theft Auto VI" fetchPriority="high"/>
+      <img className="cinema-cover-art" src={assetUrl('/media/hero-keyart.webp')} alt="Arte oficial de Jason e Lucia em Leonida, Grand Theft Auto VI" fetchPriority="high"/>
       <div className="cinema-cover-shade"/>
       <div className="cinema-cover-top"><span className="cinema-edition" data-testid="hero-edition"><span/> THE LEONIDA FILES</span><span data-testid="hero-game-label">GRAND THEFT AUTO VI</span></div>
       <motion.div className="cinema-cover-copy" initial={reducedMotion ? false : {opacity: 0, y: 12}} animate={{opacity: 1, y: 0}} transition={{duration: 0.5, ease: 'easeOut'}}>
@@ -51,7 +52,7 @@ export default function CinemaExplore() {
         <Link to="/encontrar" className="cinema-primary" data-testid="hero-explore">Descobrir o arquivo <span><ArrowUpRight size={19}/></span></Link>
       </motion.div>
       <Link to="/entidade/jason-duval" className="cinema-focus-card" data-testid="hero-featured-dossier">
-        <img src="/media/jason.webp" alt=""/><div><span>DOSSIÊ EM FOCO</span><strong>Jason Duval</strong></div><ArrowUpRight size={20}/>
+        <img src={assetUrl('/media/jason.webp')} alt=""/><div><span>DOSSIÊ EM FOCO</span><strong>Jason Duval</strong></div><ArrowUpRight size={20}/>
       </Link>
       <span className="cinema-art-credit" data-testid="hero-artwork-credit">ARTE OFICIAL · ROCKSTAR GAMES</span>
     </section>
@@ -85,15 +86,15 @@ export default function CinemaExplore() {
     <section className="cinema-world" aria-labelledby="world-title">
       <div className="cinema-section-heading"><div><span className="cinema-overline"><span className="cinema-section-index">02</span> PARA LÁ DO HORIZONTE</span><h2 id="world-title" data-testid="world-title">Nem tudo acontece na cidade.</h2></div><Link to="/encontrar?tipo=local" className="cinema-text-link" data-testid="world-all-locations">Explorar locais <ArrowUpRight size={17}/></Link></div>
       <Link className="cinema-landscape" to="/entidade/leonida-keys" data-testid="world-open-keys">
-        <img src="/media/keys.webp" loading="lazy" alt="Ilhas e pontes de Leonida Keys, imagem oficial da Rockstar Games"/>
+        <img src={assetUrl('/media/keys.webp')} loading="lazy" alt="Ilhas e pontes de Leonida Keys, imagem oficial da Rockstar Games"/>
         <div className="cinema-landscape-shade"/><span className="cinema-place-tag"><MapPin size={14}/> LEONIDA KEYS</span>
         <div className="cinema-landscape-copy"><p data-testid="world-feature-heading">O OUTRO LADO<br/><span>DO PARAÍSO.</span></p><span>Abrir o dossiê <ArrowUpRight size={19}/></span></div><span className="cinema-landscape-note">NENHUM LUGAR É SÓ UM CENÁRIO.</span>
       </Link>
-      <div className="cinema-location-list">{[{slug:'vice-city', name:'Vice City', image:'vice-city', label:'AS LUZES DA CIDADE'}, {slug:'grassrivers', name:'Grassrivers', image:'grassrivers', label:'PARA LÁ DO ASFALTO'}, {slug:'port-gellhorn', name:'Port Gellhorn', image:'port', label:'OUTRO LADO DE LEONIDA'}].map((place, index) => <Link key={place.slug} to={`/entidade/${place.slug}`} data-testid={`world-location-${place.slug}`}><img src={`/media/${place.image}.webp`} alt="" loading="lazy"/><div><span>{place.label}</span><h3>{place.name}</h3></div><span className="cinema-location-number">0{index + 1}</span><ArrowUpRight size={20}/></Link>)}</div>
+      <div className="cinema-location-list">{[{slug:'vice-city', name:'Vice City', image:'vice-city', label:'AS LUZES DA CIDADE'}, {slug:'grassrivers', name:'Grassrivers', image:'grassrivers', label:'PARA LÁ DO ASFALTO'}, {slug:'port-gellhorn', name:'Port Gellhorn', image:'port', label:'OUTRO LADO DE LEONIDA'}].map((place, index) => <Link key={place.slug} to={`/entidade/${place.slug}`} data-testid={`world-location-${place.slug}`}><img src={assetUrl(`/media/${place.image}.webp`)} alt="" loading="lazy"/><div><span>{place.label}</span><h3>{place.name}</h3></div><span className="cinema-location-number">0{index + 1}</span><ArrowUpRight size={20}/></Link>)}</div>
     </section>
 
     <section className="cinema-closing" aria-label="Continue a descobrir">
-      <Link to="/acompanhar" className="cinema-timeline-card" data-testid="explore-timeline"><img src="/media/hero-duo.webp" alt="" loading="lazy"/><div><span className="cinema-overline"><Radio size={14}/> OS MARCOS DO ARQUIVO</span><h2>A HISTÓRIA<br/>ATÉ AQUI.</h2><span className="cinema-closing-link">Percorrer a cronologia <ArrowUpRight size={18}/></span></div></Link>
+      <Link to="/acompanhar" className="cinema-timeline-card" data-testid="explore-timeline"><img src={assetUrl('/media/hero-duo.webp')} alt="" loading="lazy"/><div><span className="cinema-overline"><Radio size={14}/> OS MARCOS DO ARQUIVO</span><h2>A HISTÓRIA<br/>ATÉ AQUI.</h2><span className="cinema-closing-link">Percorrer a cronologia <ArrowUpRight size={18}/></span></div></Link>
       <div className="cinema-manifesto"><Fingerprint size={42} strokeWidth={1}/><span className="cinema-overline">A NOSSA ASSINATURA</span><h2>O detalhe importa.<br/><span>A origem também.</span></h2><p>Uma fonte oficial não é uma verificação independente. Aqui, essa diferença nunca fica nas entrelinhas.</p><Link to="/metodologia" className="cinema-text-link" data-testid="explore-evidence-method">O nosso compromisso <ArrowUpRight size={17}/></Link></div>
     </section>
     <Link to={OFFLINE ? '/redacao' : '/guardar'} className="cinema-pocket-note" data-testid="home-pocket-note"><Bookmark size={18}/><span>{OFFLINE ? 'O seu arquivo. Mesmo longe da rede.' : 'As suas descobertas merecem ficar guardadas.'}</span><ArrowUpRight size={16}/></Link>
