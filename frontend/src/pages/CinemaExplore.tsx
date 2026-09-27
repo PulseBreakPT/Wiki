@@ -1,6 +1,6 @@
 import {useEffect, useRef, useState} from 'react';
 import {Link, useNavigate} from 'react-router-dom';
-import {ArrowRight, ArrowUpRight, Bookmark, Compass, Fingerprint, MapPin, Radio, Search, ShieldCheck, UsersRound, CarFront, Layers3} from 'lucide-react';
+import {ArrowRight, ArrowUpRight, Bookmark, Compass, Fingerprint, MapPin, Radio, Search, ShieldCheck, UsersRound, CarFront, Layers3, Crosshair, PawPrint, Trophy, House} from 'lucide-react';
 import {motion, useReducedMotion} from 'framer-motion';
 import {api} from '../lib/api';
 import {assetUrl} from '../lib/assets';
@@ -13,7 +13,11 @@ const categories = [
   {id: 'personagem', name: 'Personagens', icon: UsersRound, tone: 'pink', to: '/encontrar?tipo=personagem'},
   {id: 'local', name: 'Locais', icon: MapPin, tone: 'cyan', to: '/encontrar?tipo=local'},
   {id: 'veiculo', name: 'Veículos', icon: CarFront, tone: 'amber', to: '/veiculos'},
-  {id: 'sistema', name: 'Sistemas', icon: Layers3, tone: 'lilac', to: '/encontrar?tipo=sistema'},
+  {id: 'arma', name: 'Armas', icon: Crosshair, tone: 'pink', to: '/armas'},
+  {id: 'animal', name: 'Animais', icon: PawPrint, tone: 'green', to: '/animais'},
+  {id: 'atividade', name: 'Atividades', icon: Trophy, tone: 'cyan', to: '/atividades'},
+  {id: 'propriedade', name: 'Propriedades', icon: House, tone: 'amber', to: '/propriedades'},
+  {id: 'sistema', name: 'Sistemas', icon: Layers3, tone: 'lilac', to: '/sistemas'},
 ];
 
 export default function CinemaExplore() {

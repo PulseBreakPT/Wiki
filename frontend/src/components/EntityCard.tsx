@@ -1,5 +1,5 @@
 import {Link} from 'react-router-dom';
-import {ArrowUpRight, Bookmark, Check, ShieldCheck, FileText, MapPin, UserRound, Building2, Car, Crosshair, Layers3} from 'lucide-react';
+import {ArrowUpRight, Bookmark, Check, ShieldCheck, FileText, MapPin, UserRound, Building2, Car, Crosshair, Layers3, PawPrint, Trophy, House, Radio, ListChecks, Film, PackageOpen, Backpack} from 'lucide-react';
 import {Entity} from '../types';
 import {useSaved} from '../lib/saved';
 import {assetUrl} from '../lib/assets';
@@ -11,6 +11,14 @@ const types = {
   veiculo: {label: 'Veículo', icon: Car, tone: 'amber'},
   arma: {label: 'Arma', icon: Crosshair, tone: 'green'},
   sistema: {label: 'Sistema', icon: Layers3, tone: 'green'},
+  animal: {label: 'Animal', icon: PawPrint, tone: 'green'},
+  atividade: {label: 'Atividade', icon: Trophy, tone: 'cyan'},
+  propriedade: {label: 'Propriedade', icon: House, tone: 'amber'},
+  radio: {label: 'Rádio', icon: Radio, tone: 'pink'},
+  missao: {label: 'Missão', icon: ListChecks, tone: 'lilac'},
+  media: {label: 'Media', icon: Film, tone: 'cyan'},
+  edicao: {label: 'Edição', icon: PackageOpen, tone: 'amber'},
+  equipamento: {label: 'Equipamento', icon: Backpack, tone: 'green'},
 };
 
 export const EntityCard = ({entity, compact = false, poster = false}: {entity: Entity; compact?: boolean; poster?: boolean}) => {

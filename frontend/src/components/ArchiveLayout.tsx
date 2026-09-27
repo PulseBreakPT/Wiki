@@ -4,11 +4,24 @@ import {Compass, Search, BookOpen, Radio, Bookmark, ArrowUpRight, Globe2, Menu, 
 import {useSaved} from '../lib/saved';
 import {Button} from './ui/button';
 import {ArchiveSearch} from './ArchiveSearch';
-import {OFFLINE} from '../lib/offline';
+import {LIVE_CHANNEL, OFFLINE} from '../lib/offline';
 
 const equipmentNavigation = [
   {to: '/armas', label: 'Armas', tone: 'pink'},
   {to: '/veiculos', label: 'Veículos', tone: 'amber'},
+];
+
+const archiveNavigation = [
+  {to:'/animais',label:'Animais',tone:'green'},
+  {to:'/atividades',label:'Atividades',tone:'cyan'},
+  {to:'/propriedades',label:'Propriedades',tone:'amber'},
+  {to:'/faccoes',label:'Facções',tone:'lilac'},
+  {to:'/radio',label:'Rádio',tone:'pink'},
+  {to:'/missoes',label:'Missões',tone:'green'},
+  {to:'/sistemas',label:'Sistemas',tone:'cyan'},
+  {to:'/media',label:'Media',tone:'lilac'},
+  {to:'/edicoes',label:'Edições',tone:'amber'},
+  {to:'/equipamento',label:'Equipamento',tone:'green'},
 ];
 
 const navigation = [
@@ -30,7 +43,7 @@ export const ArchiveLayout = () => {
   const [menu, setMenu] = useState(false);
   const location = useLocation();
   const {saved} = useSaved();
-  const activeTitle = location.pathname.startsWith('/entidade/') ? 'Dossiê' : ({'/':'Explorar', '/encontrar':'Encontrar', '/guardar':'Guardados', '/resolver':'Guias', '/acompanhar':'Cronologia', '/metodologia':'O compromisso', '/redacao':OFFLINE ? 'Edição offline' : 'Redação', '/armas':'Armas', '/veiculos':'Veículos'}[location.pathname] || 'Arquivo');
+  const activeTitle = location.pathname.startsWith('/entidade/') ? 'Dossiê' : ({'/':'Explorar', '/encontrar':'Encontrar', '/guardar':'Guardados', '/resolver':'Guias', '/acompanhar':'Cronologia', '/metodologia':'O compromisso', '/redacao':OFFLINE ? 'Edição offline' : 'Redação', '/armas':'Armas','/veiculos':'Veículos','/animais':'Animais','/atividades':'Atividades','/propriedades':'Propriedades','/faccoes':'Facções','/radio':'Rádio','/missoes':'Missões','/sistemas':'Sistemas','/media':'Media','/edicoes':'Edições','/equipamento':'Equipamento'}[location.pathname] || 'Arquivo');
   const sidebar = useRef<HTMLElement>(null);
   const menuButton = useRef<HTMLButtonElement>(null);
   const closeButton = useRef<HTMLButtonElement>(null);
@@ -76,10 +89,11 @@ export const ArchiveLayout = () => {
         <Link to="/encontrar?tipo=personagem" className="subnav" data-testid="sidebar-characters"><span className="tiny-square pink"/>Personagens<ArrowUpRight size={14}/></Link>
         <Link to="/encontrar?tipo=local" className="subnav" data-testid="sidebar-locations"><span className="tiny-square cyan"/>Locais e regiões<ArrowUpRight size={14}/></Link>
         {equipmentNavigation.map(({to, label, tone}) => <NavLink key={to} to={to} className={({isActive}) => `subnav tone-${tone} ${isActive ? 'active' : ''}`} data-testid={`sidebar-${to.slice(1)}`}><span className={`tiny-square ${tone}`}/>{label}<ArrowUpRight size={14}/></NavLink>)}
+        {archiveNavigation.map(({to,label,tone}) => <NavLink key={to} to={to} className={({isActive}) => `subnav tone-${tone} ${isActive ? 'active' : ''}`} data-testid={`sidebar-${to.slice(1)}`}><span className={`tiny-square ${tone}`}/>{label}<ArrowUpRight size={14}/></NavLink>)}
         <Link to="/acompanhar" className="subnav" data-testid="sidebar-timeline"><span className="tiny-square amber"/>Cronologia<ArrowUpRight size={14}/></Link>
         <div className="sidebar-bottom">
           <Link to="/metodologia" className="archive-note" data-testid="sidebar-method"><Asterisk size={25}/><strong>Menos ruído.<br/>Mais evidência.</strong><p>Cada descoberta começa numa fonte.</p><span>O nosso compromisso <ArrowRight size={14}/></span></Link>
-          <Link to="/redacao" className="editor-link" data-testid="sidebar-editorial"><PenLine size={16}/> {OFFLINE ? 'Sobre esta edição offline' : 'Redação'} <ArrowUpRight size={15}/></Link>
+          <Link to="/redacao" className="editor-link" data-testid="sidebar-editorial"><PenLine size={16}/> {OFFLINE ? (LIVE_CHANNEL ? 'Sobre o canal live' : 'Sobre esta edição offline') : 'Redação'} <ArrowUpRight size={15}/></Link>
           <div className="sidebar-footer"><span className="status-dot"/> INDEPENDENTE <span>V.01 / PT</span></div>
         </div>
       </aside>
@@ -90,12 +104,12 @@ export const ArchiveLayout = () => {
           <Link to="/" className="mobile-brand" aria-label="VI Archive, início" data-testid="mobile-brand-home"><span className="mobile-logo-mark">VI<small>↗</small></span><span className="mobile-wordmark">ARCHIVE<small>THE LEONIDA FILES</small></span></Link>
           <div className="breadcrumb" data-testid="current-section"><span>LEONIDA FILES</span><span className="breadcrumb-divider" aria-hidden="true">/</span><b>{activeTitle}</b></div>
           <ArchiveSearch/>
-          <span className="language" data-testid="interface-language">{OFFLINE ? <span className="status-dot"/> : <Globe2 size={14}/>} {OFFLINE ? 'OFFLINE' : 'PT'}</span>
+          <span className="language" data-testid="interface-language">{OFFLINE ? <span className="status-dot"/> : <Globe2 size={14}/>} {LIVE_CHANNEL ? 'LIVE' : OFFLINE ? 'OFFLINE' : 'PT'}</span>
           <Link className="header-saved" to="/guardar" title="Os meus guardados" aria-label="Os meus guardados" data-testid="header-saved"><Bookmark size={19}/>{saved.length > 0 && <span className="header-saved-dot"/>}</Link>
         </header>
         <main id="main-content"><Outlet/></main>
         <footer className="page-footer">
-          <div className="footer-top"><Link to="/" className="footer-statement" aria-label="VI Archive, voltar ao início">UM MUNDO.<br/><span>UMA FONTE DE CADA VEZ.</span></Link><div className="footer-directory"><span className="section-kicker">CONTINUE A DESCOBRIR</span><div>{[...navigation, ...equipmentNavigation].map(({to, label}) => <Link key={to} to={to}>{label}<ArrowUpRight size={14}/></Link>)}</div></div></div>
+          <div className="footer-top"><Link to="/" className="footer-statement" aria-label="VI Archive, voltar ao início">UM MUNDO.<br/><span>UMA FONTE DE CADA VEZ.</span></Link><div className="footer-directory"><span className="section-kicker">CONTINUE A DESCOBRIR</span><div>{[...navigation, ...equipmentNavigation, ...archiveNavigation].map(({to, label}) => <Link key={to} to={to}>{label}<ArrowUpRight size={14}/></Link>)}</div></div></div>
           <div className="footer-bottom"><span className="footer-logo">VI / ARCHIVE</span><span className="footer-edition">THE LEONIDA FILES — ARQUIVO INDEPENDENTE</span><Link to="/metodologia" data-testid="footer-rights">Não afiliado à Rockstar Games.<ArrowUpRight size={14}/></Link></div>
         </footer>
       </div>

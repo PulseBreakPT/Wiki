@@ -14,6 +14,7 @@ run(process.execPath, [require.resolve('@craco/craco/dist/bin/craco.js'), 'build
   env: {
     ...process.env,
     REACT_APP_OFFLINE: 'true',
+    REACT_APP_LIVE_CHANNEL: 'true',
     REACT_APP_BACKEND_URL: '',
     PUBLIC_URL: '/Wiki',
     BUILD_PATH: 'build-github',

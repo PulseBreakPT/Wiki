@@ -1,6 +1,7 @@
 import {Entity, Revision, Source} from '../types';
 
 export const OFFLINE = process.env.REACT_APP_OFFLINE === 'true';
+export const LIVE_CHANNEL = process.env.REACT_APP_LIVE_CHANNEL === 'true';
 const PUBLIC_BASE = (process.env.PUBLIC_URL || '').replace(/\/$/, '');
 type Corpus = {
   schema_version: number; snapshot_at: string; notice: string;
