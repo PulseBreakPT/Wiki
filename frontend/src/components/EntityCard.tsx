@@ -2,6 +2,7 @@ import {Link} from 'react-router-dom';
 import {ArrowUpRight, Bookmark, Check, ShieldCheck, FileText, MapPin, UserRound, Building2, Car, Crosshair, Layers3} from 'lucide-react';
 import {Entity} from '../types';
 import {useSaved} from '../lib/saved';
+import {assetUrl} from '../lib/assets';
 
 const types = {
   personagem: {label: 'Personagem', icon: UserRound, tone: 'pink'},
@@ -21,7 +22,7 @@ export const EntityCard = ({entity, compact = false, poster = false}: {entity: E
   return (
     <article className={`entity-card tone-${type.tone} ${compact ? 'compact' : ''} ${poster ? 'poster-card' : ''}`} data-entity={entity.slug} data-testid={`entity-card-${entity.slug}`}>
       <Link to={`/entidade/${entity.slug}`} className="entity-image-link" data-testid={`entity-open-${entity.slug}`}>
-        {entity.image ? <img src={entity.image} alt={entity.name} loading="lazy" style={{objectPosition: entity.image_position}}/> : <div className="image-empty"><FileText size={36}/></div>}
+        {entity.image ? <img src={assetUrl(entity.image)} alt={entity.name} loading="lazy" style={{objectPosition: entity.image_position}}/> : <div className="image-empty"><FileText size={36}/></div>}
         <span className="image-tint"/>
         <span className="entity-type" data-testid={`entity-type-${entity.slug}`}><Icon size={12}/>{type.label}</span>
         <span className="card-open-arrow" aria-hidden="true"><ArrowUpRight size={20}/></span>
