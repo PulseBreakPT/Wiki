@@ -36,7 +36,7 @@ def export_corpus():
     declarations = []
     for node in tree.body:
         if isinstance(node, ast.Assign) and any(
-            isinstance(t, ast.Name) and t.id in {'SOURCE_ID', 'SOURCE_URL', 'ENTITIES'} for t in node.targets
+            isinstance(t, ast.Name) and t.id in {'SOURCE_ID', 'SOURCE_URL', 'ENTITIES', 'ENTITY_LABELS'} for t in node.targets
         ):
             declarations.append(node)
         elif isinstance(node, ast.FunctionDef) and node.name in {'claim', 'initial_claims'}:
@@ -57,8 +57,8 @@ def export_corpus():
         if isinstance(node, ast.Constant) and isinstance(node.value, str)
         and node.value.startswith('© Rockstar Games.')
     )
-    sources = [{**s, 'publisher': 'Rockstar Games', 'accessed_at': timestamp, 'rights': rights}
-               for s in records['sources']]
+    sources = [{**s, 'publisher': s.get('publisher', 'Rockstar Games'), 'accessed_at': timestamp,
+                'rights': s.get('rights', rights)} for s in records['sources']]
     source_by_id = {s['id']: s for s in sources}
     claims = scope['initial_claims']()
     entities, history = [], {}
@@ -68,14 +68,15 @@ def export_corpus():
             raise ValueError(f'Missing offline image: {image_path}')
         own = [{**c, 'source': source_by_id[c['source_id']]} for c in claims if c['entity_id'] == entity_id]
         entity = dict(id=entity_id, slug=entity_id, name=name, type=kind, aliases=aliases,
-                      summary=summary, image=image_path, image_position=position, label='Official',
+                      summary=summary, image=image_path, image_position=position,
+                      label=scope.get('ENTITY_LABELS', {}).get(entity_id, 'Official'),
                       version=1, updated_at=timestamp, assertion_count=len(own), assertions=own)
         entities.append(entity)
         history[entity_id] = [{
             'id': f'initial-{entity_id}', 'entity_id': entity_id, 'version': 1,
-            'created_at': timestamp, 'author_name': 'Importação de fontes oficiais',
+            'created_at': timestamp, 'author_name': 'Importação editorial documentada',
             'reviewer_name': 'Revisão humana pendente',
-            'reason': 'Entrada inicial a partir de material oficial. O rótulo Official identifica a origem, não verificação independente.',
+            'reason': 'Entrada inicial a partir de fontes rastreáveis; o rótulo distingue origem oficial de identificação comunitária.',
             'snapshot': {k: v for k, v in entity.items() if k != 'assertions'},
             'assertion_ids': [c['id'] for c in own],
         }]
