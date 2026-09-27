@@ -5,5 +5,5 @@ export type SearchResult = {items: Entity[]; total: number; next_cursor?: string
 export type Revision = {id: string; version: number; reason: string; created_at: string; author_name: string; reviewer_name: string; snapshot: Entity; assertion_ids: string[]};
 export type Draft = {id: string; entity_id: string; base_version: number; snapshot: Entity; assertions: Claim[]; reason: string; status: string; author_name: string; revision: number; reviewer_name?: string; created_at: string};
 export type User = {id: string; email: string; name: string; role: string};
-export const typeNames: Record<string, string> = {personagem: 'Personagens', local: 'Locais', organizacao: 'Organizações', veiculo: 'Veículos', sistema: 'Sistemas'};
+export const typeNames: Record<string, string> = {personagem: 'Personagens', local: 'Locais', organizacao: 'Organizações', veiculo: 'Veículos', arma: 'Armas', sistema: 'Sistemas'};
 export const dateLabel = (date: string) => new Date(date).toLocaleDateString('pt-PT', {day:'numeric', month:'short', year:'numeric'});

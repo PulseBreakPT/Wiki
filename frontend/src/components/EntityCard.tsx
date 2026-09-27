@@ -1,5 +1,5 @@
 import {Link} from 'react-router-dom';
-import {ArrowUpRight, Bookmark, Check, ShieldCheck, FileText, MapPin, UserRound, Building2, Car, Layers3} from 'lucide-react';
+import {ArrowUpRight, Bookmark, Check, ShieldCheck, FileText, MapPin, UserRound, Building2, Car, Crosshair, Layers3} from 'lucide-react';
 import {Entity} from '../types';
 import {useSaved} from '../lib/saved';
 
@@ -8,6 +8,7 @@ const types = {
   local: {label: 'Local', icon: MapPin, tone: 'cyan'},
   organizacao: {label: 'Organização', icon: Building2, tone: 'lilac'},
   veiculo: {label: 'Veículo', icon: Car, tone: 'amber'},
+  arma: {label: 'Arma', icon: Crosshair, tone: 'green'},
   sistema: {label: 'Sistema', icon: Layers3, tone: 'green'},
 };
 
