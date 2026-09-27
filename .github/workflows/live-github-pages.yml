@@ -1,0 +1,58 @@
+name: Publish live APK content
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'backend/**'
+      - 'frontend/**'
+      - 'scripts/**'
+      - '.github/workflows/live-github-pages.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+  actions: read
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4.4.0
+        with:
+          node-version-file: .nvmrc
+      - name: Use the repository Yarn version
+        run: corepack enable && corepack prepare yarn@1.22.22 --activate
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Build live GitHub bundle
+        working-directory: frontend
+        run: |
+          yarn install --frozen-lockfile --non-interactive
+          yarn tsc --noEmit
+          yarn build:github
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+      - name: Upload live bundle
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: frontend/build-github
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-24.04
+    needs: build
+    steps:
+      - name: Deploy live bundle
+        id: deployment
+        uses: actions/deploy-pages@v5
