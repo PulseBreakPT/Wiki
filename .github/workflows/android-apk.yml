@@ -52,7 +52,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          bash android/gradlew -p android --no-daemon lintDebug assembleDebug
+          gradle -p android --no-daemon lintDebug assembleDebug
           mkdir -p artifacts
           cp android/app/build/outputs/apk/debug/app-debug.apk "artifacts/vi-archive-debug-${VERSION_NAME}.apk"
           (cd artifacts && sha256sum *.apk > SHA256SUMS.txt)
@@ -89,7 +89,7 @@ jobs:
           umask 077
           printf '%s' "$ANDROID_KEYSTORE_B64" | base64 --decode > "$ANDROID_KEYSTORE"
           keytool -list -keystore "$ANDROID_KEYSTORE" -storepass:env ANDROID_STORE_PASSWORD -alias "$ANDROID_KEY_ALIAS" > /dev/null
-          bash android/gradlew -p android --no-daemon lintRelease assembleRelease
+          gradle -p android --no-daemon lintRelease assembleRelease
           cp android/app/build/outputs/apk/release/app-release.apk "artifacts/vi-archive-release-${VERSION_NAME}.apk"
           "$ANDROID_HOME/build-tools/35.0.0/apksigner" verify --verbose --print-certs "artifacts/vi-archive-release-${VERSION_NAME}.apk" > artifacts/signature.txt
           (cd artifacts && sha256sum *.apk > SHA256SUMS.txt)
